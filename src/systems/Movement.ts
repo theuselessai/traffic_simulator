@@ -1,63 +1,72 @@
-import { Spritesheet } from "pixi.js";
 import { GameState } from "../game/GameState";
 import type { SceneLayers } from "../scene/SceneBuilder";
-import type { Entity, Direction } from "../entities/Entity";
+import type { Entity, Direction, SpeedState } from "../entities/Entity";
 import {
   SCENE_W, SCENE_H,
   EW_ROAD_TOP, EW_ROAD_BOTTOM, NS_ROAD_LEFT, NS_ROAD_RIGHT,
   ZEBRA_WIDTH, TILE,
-  IX_CENTER_X, IX_CENTER_Y
 } from "../scene/Road";
 import { canVehicleGo, shouldVehicleSlow, isPedestrianFlashing } from "./TrafficLight";
 
-// Stop line positions for each direction of travel
+// Physics constants (per-second, converted to per-frame in update via dt)
+const DECELERATION = 120; // px/s² (≈0.12 px/frame² at 30fps → 0.12*30²=108, rounded up)
+const ACCELERATION = 80;  // px/s² (≈0.08 px/frame² at 30fps → 0.08*30²=72, rounded up)
+const VEHICLE_GAP = 6;
+const CYCLIST_GAP = 4;
+const DEPARTURE_GAP = 12; // gap that must open before the next car departs
+
+// ---- Geometry helpers ----
+
 function getStopLinePos(dir: Direction): number {
   switch (dir) {
-    case "s": return EW_ROAD_TOP - ZEBRA_WIDTH - TILE; // approaching from north
-    case "n": return EW_ROAD_BOTTOM + ZEBRA_WIDTH + TILE; // approaching from south
-    case "e": return NS_ROAD_LEFT - ZEBRA_WIDTH - TILE; // approaching from west
-    case "w": return NS_ROAD_RIGHT + ZEBRA_WIDTH + TILE; // approaching from east
+    case "s": return EW_ROAD_TOP - ZEBRA_WIDTH - TILE;
+    case "n": return EW_ROAD_BOTTOM + ZEBRA_WIDTH + TILE;
+    case "e": return NS_ROAD_LEFT - ZEBRA_WIDTH - TILE;
+    case "w": return NS_ROAD_RIGHT + ZEBRA_WIDTH + TILE;
   }
 }
 
-function isApproachingStopLine(entity: Entity): boolean {
-  const stopPos = getStopLinePos(entity.direction as Direction);
-  const dir = entity.direction as Direction;
-
-  switch (dir) {
-    case "s": return entity.y < stopPos && entity.y > stopPos - 80;
-    case "n": return entity.y > stopPos && entity.y < stopPos + 80;
-    case "e": return entity.x < stopPos && entity.x > stopPos - 80;
-    case "w": return entity.x > stopPos && entity.x < stopPos + 80;
-  }
-  return false;
+/** Position along the axis of travel */
+function posAlong(entity: Entity, dir: Direction): number {
+  return (dir === "n" || dir === "s") ? entity.y : entity.x;
 }
 
-function isAtStopLine(entity: Entity): boolean {
-  const stopPos = getStopLinePos(entity.direction as Direction);
-  const dir = entity.direction as Direction;
-  const threshold = 3;
-
+/** Front edge position (the edge facing the direction of travel) */
+function frontPos(entity: Entity, dir: Direction): number {
+  const halfLen = (entity.length ?? 20) / 2;
   switch (dir) {
-    case "s": return Math.abs(entity.y - stopPos) < threshold;
-    case "n": return Math.abs(entity.y - stopPos) < threshold;
-    case "e": return Math.abs(entity.x - stopPos) < threshold;
-    case "w": return Math.abs(entity.x - stopPos) < threshold;
+    case "s": return entity.y + halfLen;
+    case "n": return entity.y - halfLen;
+    case "e": return entity.x + halfLen;
+    case "w": return entity.x - halfLen;
   }
-  return false;
 }
 
-function isPastStopLine(entity: Entity): boolean {
-  const stopPos = getStopLinePos(entity.direction as Direction);
-  const dir = entity.direction as Direction;
-
+/** Rear edge position (the edge facing away from travel) */
+function rearPos(entity: Entity, dir: Direction): number {
+  const halfLen = (entity.length ?? 20) / 2;
   switch (dir) {
-    case "s": return entity.y > stopPos;
-    case "n": return entity.y < stopPos;
-    case "e": return entity.x > stopPos;
-    case "w": return entity.x < stopPos;
+    case "s": return entity.y - halfLen;
+    case "n": return entity.y + halfLen;
+    case "e": return entity.x - halfLen;
+    case "w": return entity.x + halfLen;
   }
-  return false;
+}
+
+/** Signed distance from entity's front edge to a target position along travel axis.
+ *  Positive = target is still ahead, negative = already past it. */
+function distFrontTo(entity: Entity, targetPos: number, dir: Direction): number {
+  const front = frontPos(entity, dir);
+  switch (dir) {
+    case "s": return targetPos - front;
+    case "n": return front - targetPos;
+    case "e": return targetPos - front;
+    case "w": return front - targetPos;
+  }
+}
+
+function isPastStopLine(entity: Entity, dir: Direction): boolean {
+  return distFrontTo(entity, getStopLinePos(dir), dir) < 0;
 }
 
 function isOffScreen(entity: Entity): boolean {
@@ -66,104 +75,218 @@ function isOffScreen(entity: Entity): boolean {
          entity.y < -margin || entity.y > SCENE_H + margin;
 }
 
-function getVelocity(dir: Direction | string, speed: number): { vx: number; vy: number } {
-  switch (dir) {
-    case "n": return { vx: 0, vy: -speed };
-    case "s": return { vx: 0, vy: speed };
-    case "e": return { vx: speed, vy: 0 };
-    case "w": return { vx: -speed, vy: 0 };
-    case "ne": return { vx: speed * 0.707, vy: -speed * 0.707 };
-    case "nw": return { vx: -speed * 0.707, vy: -speed * 0.707 };
-    case "se": return { vx: speed * 0.707, vy: speed * 0.707 };
-    case "sw": return { vx: -speed * 0.707, vy: speed * 0.707 };
-    default: return { vx: 0, vy: 0 };
-  }
-}
+/** Find the closest entity ahead in the same lane+direction.
+ *  Returns the gap from our front edge to their rear edge, and a ref to them. */
+function findVehicleAhead(
+  entity: Entity,
+  state: GameState,
+  dir: Direction
+): { other: Entity; gap: number } | null {
+  let closest: { other: Entity; gap: number } | null = null;
+  const myFront = frontPos(entity, dir);
 
-// Check following distance - find closest vehicle ahead in same lane
-function hasVehicleAhead(entity: Entity, state: GameState): boolean {
-  const minDist = 30;
   for (const [, other] of state.entities) {
     if (other.id === entity.id) continue;
     if (other.type !== "vehicle" && other.type !== "cyclist") continue;
-    if (other.direction !== entity.direction) continue;
+    if (other.direction !== dir) continue;
     if (other.lane !== entity.lane) continue;
 
-    const dir = entity.direction as Direction;
+    const otherRear = rearPos(other, dir);
+
+    // Gap from my front to their rear (positive = they are ahead with space between)
+    let gap: number;
     switch (dir) {
-      case "s":
-        if (other.y > entity.y && other.y - entity.y < minDist) return true;
-        break;
-      case "n":
-        if (other.y < entity.y && entity.y - other.y < minDist) return true;
-        break;
-      case "e":
-        if (other.x > entity.x && other.x - entity.x < minDist) return true;
-        break;
-      case "w":
-        if (other.x < entity.x && entity.x - other.x < minDist) return true;
-        break;
+      case "s": gap = otherRear - myFront; break;
+      case "n": gap = myFront - otherRear; break;
+      case "e": gap = otherRear - myFront; break;
+      case "w": gap = myFront - otherRear; break;
+    }
+
+    // Only consider entities that are actually ahead (gap > some negative tolerance)
+    if (gap < -(entity.length ?? 20)) continue; // overlapping or behind us
+
+    if (closest === null || gap < closest.gap) {
+      closest = { other, gap };
     }
   }
-  return false;
+
+  return closest;
 }
+
+/** Compute the furthest-forward position our front edge can occupy right now.
+ *  This is the min of (stop line, rear of vehicle ahead − gap). */
+function computeTargetFrontPos(
+  entity: Entity,
+  state: GameState,
+  dir: Direction,
+  lightIsRed: boolean
+): number | null {
+  const gap = entity.type === "cyclist" ? CYCLIST_GAP : VEHICLE_GAP;
+  let target: number | null = null;
+
+  // Stop line constraint (only if light is red/yellow and we haven't passed it)
+  if (lightIsRed && !isPastStopLine(entity, dir)) {
+    target = getStopLinePos(dir);
+  }
+
+  // Vehicle-ahead constraint (always applies, regardless of light)
+  const ahead = findVehicleAhead(entity, state, dir);
+  if (ahead) {
+    const otherRear = rearPos(ahead.other, dir);
+    let behindPos: number;
+    switch (dir) {
+      case "s": behindPos = otherRear - gap; break;
+      case "n": behindPos = otherRear + gap; break;
+      case "e": behindPos = otherRear - gap; break;
+      case "w": behindPos = otherRear + gap; break;
+    }
+
+    if (target === null) {
+      target = behindPos;
+    } else {
+      // Take the more conservative (further back)
+      switch (dir) {
+        case "s": target = Math.min(target, behindPos); break;
+        case "n": target = Math.max(target, behindPos); break;
+        case "e": target = Math.min(target, behindPos); break;
+        case "w": target = Math.max(target, behindPos); break;
+      }
+    }
+  }
+
+  return target;
+}
+
+/** Braking distance from current speed: d = v² / (2a) */
+function brakingDistance(speed: number): number {
+  return (speed * speed) / (2 * DECELERATION);
+}
+
+// ---- Main vehicle update ----
 
 function updateVehicle(entity: Entity, state: GameState, dt: number) {
   const dir = entity.direction as Direction;
 
-  if (entity.state === "moving") {
-    // Check if we need to stop at red/yellow light
-    if (!isPastStopLine(entity) && isApproachingStopLine(entity)) {
-      if (!canVehicleGo(state, dir)) {
-        if (shouldVehicleSlow(entity as any, dir)) {
-          // Yellow: if close to stop line (within 30px), continue through
-          const stopPos = getStopLinePos(dir);
-          const dist = dir === "s" ? stopPos - entity.y :
-                       dir === "n" ? entity.y - stopPos :
-                       dir === "e" ? stopPos - entity.x :
-                       entity.x - stopPos;
-          if (dist > 30) {
-            entity.state = "waiting";
-          }
-        } else {
-          // Red light - stop
-          entity.state = "waiting";
-        }
+  // Determine if the light is blocking us
+  const lightGreen = canVehicleGo(state, dir);
+  const lightYellow = shouldVehicleSlow(state, dir);
+  const lightBlocking = !lightGreen; // red or yellow or scramble
+
+  // If yellow and we're close to the stop line, treat as green (run the yellow)
+  let effectivelyBlocked = lightBlocking;
+  if (lightYellow && !isPastStopLine(entity, dir)) {
+    const distToStop = distFrontTo(entity, getStopLinePos(dir), dir);
+    if (distToStop >= 0 && distToStop < 30) {
+      effectivelyBlocked = false; // close enough, run it
+    }
+  }
+  // If we've already passed the stop line, never block
+  if (isPastStopLine(entity, dir)) {
+    effectivelyBlocked = false;
+  }
+
+  // Compute the target front position (where our front edge should not exceed)
+  const targetFront = computeTargetFrontPos(entity, state, dir, effectivelyBlocked);
+
+  // Distance from our front edge to that target
+  let distToTarget = Infinity;
+  if (targetFront !== null) {
+    distToTarget = distFrontTo(entity, targetFront, dir);
+    if (distToTarget < 0) distToTarget = 0; // already at or past target
+  }
+
+  // ---- Speed state machine ----
+  const prevState = entity.speedState;
+
+  if (distToTarget <= 0 && entity.currentSpeed <= 0) {
+    // At target and stopped
+    entity.speedState = "stopped";
+    entity.currentSpeed = 0;
+  } else if (distToTarget < brakingDistance(entity.currentSpeed) && distToTarget < Infinity) {
+    // Need to brake
+    entity.speedState = "decelerating";
+  } else if (entity.speedState === "stopped") {
+    // We're stopped — check if we should start moving
+    if (targetFront === null) {
+      // No obstacle — accelerate
+      entity.speedState = "accelerating";
+    } else if (distToTarget > DEPARTURE_GAP) {
+      // Enough gap opened ahead — accelerate
+      entity.speedState = "accelerating";
+    }
+    // else: stay stopped, gap hasn't opened yet
+  } else if (entity.currentSpeed < entity.cruiseSpeed) {
+    entity.speedState = "accelerating";
+  } else {
+    entity.speedState = "cruising";
+  }
+
+  // ---- Apply speed changes ----
+  switch (entity.speedState) {
+    case "cruising":
+      entity.currentSpeed = entity.cruiseSpeed;
+      break;
+    case "decelerating": {
+      entity.currentSpeed -= DECELERATION * dt;
+      if (entity.currentSpeed < 0) entity.currentSpeed = 0;
+      // If we'd overshoot the target at this speed, clamp
+      if (distToTarget <= 0) {
+        entity.currentSpeed = 0;
       }
+      break;
+    }
+    case "stopped":
+      entity.currentSpeed = 0;
+      break;
+    case "accelerating":
+      entity.currentSpeed += ACCELERATION * dt;
+      if (entity.currentSpeed > entity.cruiseSpeed) {
+        entity.currentSpeed = entity.cruiseSpeed;
+      }
+      break;
+  }
+
+  // ---- Apply movement (the ONLY place position is modified) ----
+  if (entity.currentSpeed > 0) {
+    const spd = entity.currentSpeed;
+    switch (dir) {
+      case "s": entity.y += spd * dt; break;
+      case "n": entity.y -= spd * dt; break;
+      case "e": entity.x += spd * dt; break;
+      case "w": entity.x -= spd * dt; break;
     }
 
-    // Check following distance
-    if (hasVehicleAhead(entity, state)) {
-      // Slow down but don't fully stop (reduce speed)
-      const { vx, vy } = getVelocity(dir, entity.speed * 0.3);
-      entity.x += vx * dt;
-      entity.y += vy * dt;
-    } else {
-      const { vx, vy } = getVelocity(dir, entity.speed);
-      entity.x += vx * dt;
-      entity.y += vy * dt;
-    }
-  } else if (entity.state === "waiting") {
-    // Check if light turned green
-    if (canVehicleGo(state, dir)) {
-      entity.state = "moving";
-    }
-    // Also check if vehicle ahead moved
-    if (!hasVehicleAhead(entity, state) && isPastStopLine(entity)) {
-      entity.state = "moving";
+    // Prevent overshooting the target position
+    if (targetFront !== null && entity.speedState === "decelerating") {
+      const overshoot = -distFrontTo(entity, targetFront, dir);
+      if (overshoot > 0) {
+        // Nudge back by overshoot amount
+        switch (dir) {
+          case "s": entity.y -= overshoot; break;
+          case "n": entity.y += overshoot; break;
+          case "e": entity.x -= overshoot; break;
+          case "w": entity.x += overshoot; break;
+        }
+        entity.currentSpeed = 0;
+        entity.speedState = "stopped";
+      }
     }
   }
 
-  // Update sprite position
+  // Keep high-level state in sync for spawner/other systems
+  entity.state = entity.currentSpeed > 0 ? "moving" : (isOffScreen(entity) ? "despawning" : "waiting");
+
+  // Update sprite
   entity.sprite.x = entity.x;
   entity.sprite.y = entity.y;
   entity.sprite.zIndex = entity.y;
 
-  // Despawn if off screen
   if (isOffScreen(entity)) {
     entity.state = "despawning";
   }
 }
+
+// ---- Pedestrian (unchanged physics — they don't queue) ----
 
 function updatePedestrian(entity: Entity, state: GameState, dt: number) {
   if (entity.targetX === undefined || entity.targetY === undefined) {
@@ -180,8 +303,7 @@ function updatePedestrian(entity: Entity, state: GameState, dt: number) {
     return;
   }
 
-  // Speed up during flashing phase
-  let speed = entity.speed;
+  let speed = entity.cruiseSpeed;
   if (isPedestrianFlashing(state)) {
     speed *= 1.3;
   }
@@ -191,7 +313,6 @@ function updatePedestrian(entity: Entity, state: GameState, dt: number) {
   entity.x += nx * speed * dt;
   entity.y += ny * speed * dt;
 
-  // Walk animation
   entity.animTimer += dt;
   if (entity.animTimer > 0.15) {
     entity.animTimer = 0;
@@ -207,17 +328,19 @@ function updatePedestrian(entity: Entity, state: GameState, dt: number) {
   }
 }
 
+// ---- Cyclist (uses vehicle logic + pedal anim) ----
+
 function updateCyclist(entity: Entity, state: GameState, dt: number) {
-  // Cyclists use same logic as vehicles
   updateVehicle(entity, state, dt);
 
-  // Pedal animation
   entity.animTimer += dt;
   if (entity.animTimer > 0.3) {
     entity.animTimer = 0;
     entity.animFrame = entity.animFrame === 0 ? 1 : 0;
   }
 }
+
+// ---- Public entry point ----
 
 export function updateMovement(
   state: GameState,
@@ -244,7 +367,6 @@ export function updateMovement(
     }
   }
 
-  // Remove despawned entities
   for (const id of toRemove) {
     const entity = state.entities.get(id);
     if (entity) {

@@ -80,20 +80,28 @@ function spawnVehicle(state: GameState, layers: SceneLayers, sheet: Spritesheet)
   sprite.zIndex = y;
   layers.vehicle.addChild(sprite);
 
-  const speed = vType === "bus" ? 35 : vType === "kei_truck" ? 40 : 50;
+  // Cruise speed in px/s with slight per-vehicle variance
+  const baseCruise = vType === "bus" ? 35 : vType === "kei_truck" ? 40 : 50;
+  const cruiseSpeed = baseCruise + (Math.random() - 0.5) * 4;
+
+  // Length along direction of travel: height for N/S, width for E/W
+  const length = (dir === "n" || dir === "s") ? texture.height : texture.width;
 
   const entity: Entity = {
     id: state.nextEntityId++,
     type: "vehicle",
     x, y,
-    speed,
+    currentSpeed: cruiseSpeed,
+    cruiseSpeed,
     direction: dir,
     sprite,
     state: "moving",
+    speedState: "cruising",
     variant: vType,
     animFrame: 0,
     animTimer: 0,
     lane,
+    length,
   };
 
   state.entities.set(entity.id, entity);
@@ -127,17 +135,23 @@ function spawnCyclist(state: GameState, layers: SceneLayers, sheet: Spritesheet)
   sprite.zIndex = y;
   layers.vehicle.addChild(sprite);
 
+  const length = (dir === "n" || dir === "s") ? texture.height : texture.width;
+  const cruiseSpeed = 30 + (Math.random() - 0.5) * 4;
+
   const entity: Entity = {
     id: state.nextEntityId++,
     type: "cyclist",
     x, y,
-    speed: 30,
+    currentSpeed: cruiseSpeed,
+    cruiseSpeed,
     direction: dir,
     sprite,
     state: "moving",
+    speedState: "cruising",
     variant,
     animFrame: 0,
     animTimer: 0,
+    length,
     lane,
   };
 
@@ -277,10 +291,12 @@ function spawnPedestrianWave(state: GameState, layers: SceneLayers, sheet: Sprit
       id: state.nextEntityId++,
       type: "pedestrian",
       x, y,
-      speed,
+      currentSpeed: speed,
+      cruiseSpeed: speed,
       direction: path.dir,
       sprite,
       state: "moving",
+      speedState: "cruising",
       variant,
       animFrame: 0,
       animTimer: 0,

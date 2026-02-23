@@ -184,9 +184,9 @@ function drawSedan(ctx: CanvasRenderingContext2D, bodyColor: string, dir: Dir) {
   // Roof (lighter)
   rect(ctx, 4, 8, 8, 6, PALETTE.WINDOW_DARK);
   // Windshield
-  rect(ctx, 4, 7, 8, 2, "#6688aa");
+  rect(ctx, 4, 7, 8, 2, PALETTE.WINDSHIELD);
   // Rear window
-  rect(ctx, 4, 14, 8, 1, "#6688aa");
+  rect(ctx, 4, 14, 8, 1, PALETTE.WINDSHIELD);
   // Headlights
   px(ctx, 4, 4, PALETTE.HEADLIGHT);
   px(ctx, 11, 4, PALETTE.HEADLIGHT);
@@ -194,10 +194,10 @@ function drawSedan(ctx: CanvasRenderingContext2D, bodyColor: string, dir: Dir) {
   px(ctx, 4, 19, PALETTE.TAILLIGHT);
   px(ctx, 11, 19, PALETTE.TAILLIGHT);
   // Wheels
-  rect(ctx, 2, 5, 2, 3, PALETTE.CAR_BLACK);
-  rect(ctx, 12, 5, 2, 3, PALETTE.CAR_BLACK);
-  rect(ctx, 2, 16, 2, 3, PALETTE.CAR_BLACK);
-  rect(ctx, 12, 16, 2, 3, PALETTE.CAR_BLACK);
+  rect(ctx, 2, 5, 2, 3, PALETTE.WHEEL);
+  rect(ctx, 12, 5, 2, 3, PALETTE.WHEEL);
+  rect(ctx, 2, 16, 2, 3, PALETTE.WHEEL);
+  rect(ctx, 12, 16, 2, 3, PALETTE.WHEEL);
 }
 
 function rotateCanvas(src: Canvas, srcW: number, srcH: number, dir: Dir): [Canvas, number, number] {
@@ -253,9 +253,9 @@ function generateVehicles() {
   // Taxi
   for (const dir of dirs) {
     const [c, ctx] = createPixelCanvas(16, 24);
-    drawSedan(ctx, PALETTE.TAXI_YELLOW, "s");
+    drawSedan(ctx, PALETTE.TAXI_BODY, "s");
     // Taxi sign on roof
-    rect(ctx, 6, 9, 4, 2, PALETTE.TAXI_GREEN);
+    rect(ctx, 6, 9, 4, 2, PALETTE.TAXI_SIGN);
     const [rotated, rw, rh] = rotateCanvas(c, 16, 24, dir);
     addFrame(`taxi_${dir}`, rotated, rw, rh);
   }
@@ -263,14 +263,14 @@ function generateVehicles() {
   // Bus (16x40 facing south)
   for (const dir of dirs) {
     const [c, ctx] = createPixelCanvas(16, 40);
-    rect(ctx, 2, 2, 12, 36, PALETTE.BUS_GREEN);
+    rect(ctx, 2, 2, 12, 36, PALETTE.BUS_BODY);
     // Windows
     for (let wy = 6; wy < 34; wy += 4) {
-      rect(ctx, 3, wy, 2, 3, "#6688aa");
-      rect(ctx, 11, wy, 2, 3, "#6688aa");
+      rect(ctx, 3, wy, 2, 3, PALETTE.WINDSHIELD);
+      rect(ctx, 11, wy, 2, 3, PALETTE.WINDSHIELD);
     }
     // Front windshield
-    rect(ctx, 3, 3, 10, 3, "#6688aa");
+    rect(ctx, 3, 3, 10, 3, PALETTE.WINDSHIELD);
     // Headlights
     px(ctx, 3, 2, PALETTE.HEADLIGHT);
     px(ctx, 12, 2, PALETTE.HEADLIGHT);
@@ -278,12 +278,12 @@ function generateVehicles() {
     rect(ctx, 3, 37, 2, 1, PALETTE.TAILLIGHT);
     rect(ctx, 11, 37, 2, 1, PALETTE.TAILLIGHT);
     // Wheels
-    rect(ctx, 1, 4, 2, 4, PALETTE.CAR_BLACK);
-    rect(ctx, 13, 4, 2, 4, PALETTE.CAR_BLACK);
-    rect(ctx, 1, 32, 2, 4, PALETTE.CAR_BLACK);
-    rect(ctx, 13, 32, 2, 4, PALETTE.CAR_BLACK);
+    rect(ctx, 1, 4, 2, 4, PALETTE.WHEEL);
+    rect(ctx, 13, 4, 2, 4, PALETTE.WHEEL);
+    rect(ctx, 1, 32, 2, 4, PALETTE.WHEEL);
+    rect(ctx, 13, 32, 2, 4, PALETTE.WHEEL);
     // Route number
-    rect(ctx, 6, 3, 4, 2, PALETTE.SIGNAL_GREEN);
+    rect(ctx, 6, 3, 4, 2, PALETTE.LIME);
     const [rotated, rw, rh] = rotateCanvas(c, 16, 40, dir);
     addFrame(`bus_${dir}`, rotated, rw, rh);
   }
@@ -292,11 +292,11 @@ function generateVehicles() {
   for (const dir of dirs) {
     const [c, ctx] = createPixelCanvas(14, 20);
     // Cab
-    rect(ctx, 2, 2, 10, 6, PALETTE.KEI_TRUCK_BLUE);
-    rect(ctx, 3, 3, 8, 3, "#6688aa"); // windshield
+    rect(ctx, 2, 2, 10, 6, PALETTE.KEI_TRUCK);
+    rect(ctx, 3, 3, 8, 3, PALETTE.WINDSHIELD); // windshield
     // Bed
     rect(ctx, 2, 8, 10, 10, PALETTE.SUIT_GREY);
-    rect(ctx, 3, 9, 8, 8, "#505050");
+    rect(ctx, 3, 9, 8, 8, PALETTE.CHARCOAL);
     // Headlights
     px(ctx, 3, 2, PALETTE.HEADLIGHT);
     px(ctx, 10, 2, PALETTE.HEADLIGHT);
@@ -304,10 +304,10 @@ function generateVehicles() {
     px(ctx, 3, 17, PALETTE.TAILLIGHT);
     px(ctx, 10, 17, PALETTE.TAILLIGHT);
     // Wheels
-    rect(ctx, 1, 3, 2, 3, PALETTE.CAR_BLACK);
-    rect(ctx, 11, 3, 2, 3, PALETTE.CAR_BLACK);
-    rect(ctx, 1, 14, 2, 3, PALETTE.CAR_BLACK);
-    rect(ctx, 11, 14, 2, 3, PALETTE.CAR_BLACK);
+    rect(ctx, 1, 3, 2, 3, PALETTE.WHEEL);
+    rect(ctx, 11, 3, 2, 3, PALETTE.WHEEL);
+    rect(ctx, 1, 14, 2, 3, PALETTE.WHEEL);
+    rect(ctx, 11, 14, 2, 3, PALETTE.WHEEL);
     const [rotated, rw, rh] = rotateCanvas(c, 14, 20, dir);
     addFrame(`kei_truck_${dir}`, rotated, rw, rh);
   }
@@ -315,12 +315,12 @@ function generateVehicles() {
   // Police car
   for (const dir of dirs) {
     const [c, ctx] = createPixelCanvas(16, 24);
-    drawSedan(ctx, PALETTE.POLICE_BW, "s");
+    drawSedan(ctx, PALETTE.POLICE, "s");
     // Police stripe
     rect(ctx, 3, 10, 10, 2, PALETTE.CAR_BLACK);
     // Light bar
     px(ctx, 6, 9, PALETTE.SIGNAL_RED);
-    px(ctx, 9, 9, PALETTE.SIGNAL_BLUE ?? "#3050ff");
+    px(ctx, 9, 9, PALETTE.BRIGHT_BLUE);
     const [rotated, rw, rh] = rotateCanvas(c, 16, 24, dir);
     addFrame(`police_${dir}`, rotated, rw, rh);
   }
@@ -339,11 +339,11 @@ interface PedVariant {
 }
 
 const PED_VARIANTS: PedVariant[] = [
-  { name: "office_m", hair: PALETTE.CAR_BLACK, skin: PALETTE.SKIN_LIGHT, top: PALETTE.SUIT_DARK, bottom: PALETTE.SUIT_DARK },
-  { name: "office_f", hair: PALETTE.CAR_BLACK, skin: PALETTE.SKIN_LIGHT, top: PALETTE.SHIRT_WHITE, bottom: PALETTE.SKIRT_NAVY },
-  { name: "student", hair: PALETTE.CAR_BLACK, skin: PALETTE.SKIN_MID, top: PALETTE.STUDENT_NAVY, bottom: PALETTE.STUDENT_NAVY },
-  { name: "tourist", hair: "#8b6914", skin: PALETTE.SKIN_LIGHT, top: PALETTE.TOURIST_RED, bottom: "#5070a0", accessory: PALETTE.TOURIST_BLUE },
-  { name: "elderly", hair: "#c0c0c0", skin: PALETTE.SKIN_MID, top: PALETTE.ELDERLY_BROWN, bottom: "#605040" },
+  { name: "office_m", hair: PALETTE.HAIR_DARK, skin: PALETTE.SKIN_LIGHT, top: PALETTE.SUIT_DARK, bottom: PALETTE.SUIT_DARK },
+  { name: "office_f", hair: PALETTE.HAIR_DARK, skin: PALETTE.SKIN_LIGHT, top: PALETTE.SHIRT_WHITE, bottom: PALETTE.SKIRT_NAVY },
+  { name: "student", hair: PALETTE.HAIR_DARK, skin: PALETTE.SKIN_MEDIUM, top: PALETTE.STUDENT_NAVY, bottom: PALETTE.STUDENT_NAVY },
+  { name: "tourist", hair: PALETTE.HAIR_GOLDEN, skin: PALETTE.SKIN_LIGHT, top: PALETTE.TOURIST_TOP, bottom: PALETTE.TOURIST_BOTTOM, accessory: PALETTE.TOURIST_PACK },
+  { name: "elderly", hair: PALETTE.HAIR_GREY, skin: PALETTE.SKIN_MEDIUM, top: PALETTE.ELDERLY_TOP, bottom: PALETTE.ELDERLY_BOT },
 ];
 
 function drawPedestrian(ctx: CanvasRenderingContext2D, v: PedVariant, frame: number, dir: PedDir) {
@@ -388,8 +388,8 @@ function drawPedestrian(ctx: CanvasRenderingContext2D, v: PedVariant, frame: num
   }
 
   // Shoes
-  rect(ctx, 3, 14, 2, 2, PALETTE.CAR_BLACK);
-  rect(ctx, 5, 14, 2, 2, PALETTE.CAR_BLACK);
+  rect(ctx, 3, 14, 2, 2, PALETTE.SHOES);
+  rect(ctx, 5, 14, 2, 2, PALETTE.SHOES);
 
   // Accessory (tourist backpack)
   if (v.accessory) {
@@ -421,7 +421,7 @@ function generatePedestrians() {
 // ---- Cyclist Sprites ----
 function drawCyclist(ctx: CanvasRenderingContext2D, isDelivery: boolean, frame: number) {
   // 10w x 20h (facing south), frame 0 or 1 for pedal cycle
-  const topColor = isDelivery ? PALETTE.BUS_GREEN : PALETTE.SUIT_GREY;
+  const topColor = isDelivery ? PALETTE.BUS_BODY : PALETTE.SUIT_GREY;
 
   // Wheels
   const pedalOffset = frame === 0 ? 0 : 1;
@@ -467,53 +467,40 @@ function generateCyclists() {
   }
 }
 
-// ---- Traffic Lights ----
+// ---- Traffic Lights (overhead gantry style — no poles) ----
 function generateTrafficLights() {
-  // Vehicle signal (8x24) - post + 3 lights
+  // Vehicle signal — overhead style (8x6px)
+  // Gantry arm + housing + active light + shadow
   for (const state of ["red", "yellow", "green"] as const) {
-    const [c, ctx] = createPixelCanvas(8, 24);
-    // Post
-    rect(ctx, 3, 12, 2, 12, PALETTE.SIGNAL_POST);
-    // Housing
-    rect(ctx, 1, 0, 6, 12, PALETTE.SIGNAL_POST);
-    // Lights
-    const colors = {
-      red: [PALETTE.SIGNAL_RED, PALETTE.SIGNAL_OFF, PALETTE.SIGNAL_OFF],
-      yellow: [PALETTE.SIGNAL_OFF, PALETTE.SIGNAL_YELLOW, PALETTE.SIGNAL_OFF],
-      green: [PALETTE.SIGNAL_OFF, PALETTE.SIGNAL_OFF, PALETTE.SIGNAL_GREEN],
-    };
-    const [r, y, g] = colors[state];
-    rect(ctx, 2, 1, 4, 3, r);
-    rect(ctx, 2, 5, 4, 3, y);
-    rect(ctx, 2, 9, 4, 3, g);
-    addFrame(`signal_vehicle_${state}`, c, 8, 24);
+    const [c, ctx] = createPixelCanvas(8, 6);
+    // Gantry arm (full width, 1px)
+    rect(ctx, 0, 0, 8, 1, PALETTE.SIGNAL_POST);
+    // Housing (4px wide, centered)
+    rect(ctx, 2, 1, 4, 3, PALETTE.SIGNAL_POST);
+    // Active light (2x2 centered in housing)
+    const lightColor = state === "red" ? PALETTE.SIGNAL_RED
+                     : state === "yellow" ? PALETTE.SIGNAL_YELLOW
+                     : PALETTE.LIME;
+    rect(ctx, 3, 1, 2, 2, lightColor);
+    // Shadow beneath housing
+    rect(ctx, 2, 4, 4, 1, PALETTE.SIGNAL_OFF);
+    addFrame(`signal_vehicle_${state}`, c, 8, 6);
   }
 
-  // Pedestrian signal (8x20) - post + walk/stop
+  // Pedestrian signal — compact (6x5px)
+  // Housing + color indicator + shadow
   for (const state of ["walk", "stop", "flash"] as const) {
-    const [c, ctx] = createPixelCanvas(8, 20);
-    // Post
-    rect(ctx, 3, 10, 2, 10, PALETTE.SIGNAL_POST);
+    const [c, ctx] = createPixelCanvas(6, 5);
     // Housing
-    rect(ctx, 1, 0, 6, 10, PALETTE.SIGNAL_POST);
-    if (state === "walk") {
-      // Walk figure (green)
-      rect(ctx, 3, 1, 2, 2, PALETTE.WALK_GREEN);
-      rect(ctx, 2, 3, 4, 3, PALETTE.WALK_GREEN);
-      rect(ctx, 2, 6, 1, 3, PALETTE.WALK_GREEN);
-      rect(ctx, 5, 6, 1, 3, PALETTE.WALK_GREEN);
-    } else if (state === "stop") {
-      // Stop figure (red hand)
-      rect(ctx, 2, 1, 4, 4, PALETTE.STOP_RED);
-      rect(ctx, 3, 5, 2, 4, PALETTE.STOP_RED);
-    } else {
-      // Flashing - dimmer walk
-      rect(ctx, 3, 1, 2, 2, "#106630");
-      rect(ctx, 2, 3, 4, 3, "#106630");
-      rect(ctx, 2, 6, 1, 3, "#106630");
-      rect(ctx, 5, 6, 1, 3, "#106630");
-    }
-    addFrame(`signal_ped_${state}`, c, 8, 20);
+    rect(ctx, 0, 0, 6, 4, PALETTE.SIGNAL_POST);
+    // Signal indicator (4x2 centered)
+    const color = state === "walk" ? PALETTE.WALK_GREEN
+                : state === "stop" ? PALETTE.STOP_RED
+                : PALETTE.FLASH_DIM;
+    rect(ctx, 1, 1, 4, 2, color);
+    // Shadow
+    rect(ctx, 1, 4, 4, 1, PALETTE.SIGNAL_OFF);
+    addFrame(`signal_ped_${state}`, c, 6, 5);
   }
 }
 
@@ -523,7 +510,7 @@ function generateBuildings() {
   {
     const [c, ctx] = createPixelCanvas(64, 80);
     // Cylindrical shape - approximate with rounded rect
-    rect(ctx, 8, 0, 48, 80, PALETTE.BLDG_109_PINK);
+    rect(ctx, 8, 0, 48, 80, PALETTE.BLDG_109_MAIN);
     rect(ctx, 4, 4, 4, 72, PALETTE.BLDG_109_DARK);
     rect(ctx, 56, 4, 4, 72, PALETTE.BLDG_109_DARK);
     // "109" text area
@@ -542,7 +529,7 @@ function generateBuildings() {
   // Shibuya 109 Night
   {
     const [c, ctx] = createPixelCanvas(64, 80);
-    rect(ctx, 8, 0, 48, 80, PALETTE.BLDG_109_PINK);
+    rect(ctx, 8, 0, 48, 80, PALETTE.BLDG_109_MAIN);
     rect(ctx, 4, 4, 4, 72, PALETTE.BLDG_109_DARK);
     rect(ctx, 56, 4, 4, 72, PALETTE.BLDG_109_DARK);
     rect(ctx, 16, 8, 32, 12, PALETTE.BLDG_109_DARK);
@@ -559,9 +546,9 @@ function generateBuildings() {
   // Starbucks (56x48)
   {
     const [c, ctx] = createPixelCanvas(56, 48);
-    rect(ctx, 0, 0, 56, 48, PALETTE.STARBUCKS_WALL);
+    rect(ctx, 0, 0, 56, 48, PALETTE.SBUX_WALL);
     // Green awning
-    rect(ctx, 0, 0, 56, 8, PALETTE.STARBUCKS_GREEN);
+    rect(ctx, 0, 0, 56, 8, PALETTE.SBUX_GREEN);
     // Windows
     rect(ctx, 4, 12, 14, 16, PALETTE.WINDOW_DARK);
     rect(ctx, 22, 12, 14, 16, PALETTE.WINDOW_DARK);
@@ -574,8 +561,8 @@ function generateBuildings() {
   // Starbucks Night
   {
     const [c, ctx] = createPixelCanvas(56, 48);
-    rect(ctx, 0, 0, 56, 48, PALETTE.STARBUCKS_WALL);
-    rect(ctx, 0, 0, 56, 8, PALETTE.STARBUCKS_GREEN);
+    rect(ctx, 0, 0, 56, 48, PALETTE.SBUX_WALL);
+    rect(ctx, 0, 0, 56, 8, PALETTE.SBUX_GREEN);
     rect(ctx, 4, 12, 14, 16, PALETTE.WINDOW_GLOW);
     rect(ctx, 22, 12, 14, 16, PALETTE.WINDOW_GLOW);
     rect(ctx, 40, 12, 12, 16, PALETTE.WINDOW_GLOW);
@@ -586,7 +573,7 @@ function generateBuildings() {
   // QFront (56x96)
   {
     const [c, ctx] = createPixelCanvas(56, 96);
-    rect(ctx, 0, 0, 56, 96, PALETTE.QFRONT_GREY);
+    rect(ctx, 0, 0, 56, 96, PALETTE.QFRONT_WALL);
     // Big screen
     rect(ctx, 4, 4, 48, 32, PALETTE.QFRONT_SCREEN);
     // Windows
@@ -603,8 +590,8 @@ function generateBuildings() {
   // QFront Night
   {
     const [c, ctx] = createPixelCanvas(56, 96);
-    rect(ctx, 0, 0, 56, 96, PALETTE.QFRONT_GREY);
-    rect(ctx, 4, 4, 48, 32, PALETTE.QFRONT_SCREEN_GLOW);
+    rect(ctx, 0, 0, 56, 96, PALETTE.QFRONT_WALL);
+    rect(ctx, 4, 4, 48, 32, PALETTE.QFRONT_GLOW);
     for (let wy = 40; wy < 88; wy += 8) {
       for (let wx = 4; wx < 52; wx += 10) {
         const lit = Math.random() > 0.4;
@@ -618,7 +605,7 @@ function generateBuildings() {
   // Station (80x48)
   {
     const [c, ctx] = createPixelCanvas(80, 48);
-    rect(ctx, 0, 8, 80, 40, PALETTE.STATION_BROWN);
+    rect(ctx, 0, 8, 80, 40, PALETTE.STATION_WALL);
     // Roof
     rect(ctx, 0, 0, 80, 10, PALETTE.STATION_ROOF);
     // Windows
@@ -635,7 +622,7 @@ function generateBuildings() {
   // Station Night
   {
     const [c, ctx] = createPixelCanvas(80, 48);
-    rect(ctx, 0, 8, 80, 40, PALETTE.STATION_BROWN);
+    rect(ctx, 0, 8, 80, 40, PALETTE.STATION_WALL);
     rect(ctx, 0, 0, 80, 10, PALETTE.STATION_ROOF);
     for (let wx = 4; wx < 76; wx += 10) {
       rect(ctx, wx, 14, 7, 8, PALETTE.WINDOW_GLOW);
@@ -647,8 +634,8 @@ function generateBuildings() {
   }
 
   // Generic storefronts (48x40) x2
-  for (const [idx, awningColor] of [PALETTE.AWNING, PALETTE.TOURIST_BLUE].entries()) {
-    const wallColor = idx === 0 ? PALETTE.STOREFRONT_A : PALETTE.STOREFRONT_B;
+  for (const [idx, awningColor] of [PALETTE.AWNING_A, PALETTE.AWNING_B].entries()) {
+    const wallColor = idx === 0 ? PALETTE.STORE_WALL_A : PALETTE.STORE_WALL_B;
     const [c, ctx] = createPixelCanvas(48, 40);
     rect(ctx, 0, 0, 48, 40, wallColor);
     rect(ctx, 0, 0, 48, 6, awningColor);

@@ -56,7 +56,7 @@ export function isPedestrianFlashing(state: GameState): boolean {
   return state.trafficPhase === TrafficPhase.SCRAMBLE_FLASH;
 }
 
-// Traffic light signal sprites placed at corners of intersection
+// Traffic light signal sprites — overhead gantry style, floating above the road
 interface SignalSprites {
   nsSignals: Sprite[];
   ewSignals: Sprite[];
@@ -74,44 +74,68 @@ export function placeTrafficLightSprites(
   const ewSignals: Sprite[] = [];
   const pedSignals: Sprite[] = [];
 
-  // NS signals (at top and bottom of intersection)
-  // North side - signal for southbound traffic
-  const nsTop = new Sprite(sheet.textures["signal_vehicle_green"]);
-  nsTop.x = NS_ROAD_LEFT - 12;
-  nsTop.y = EW_ROAD_TOP - ZEBRA_WIDTH - TILE - 24;
-  layer.addChild(nsTop);
-  nsSignals.push(nsTop);
+  // Lane center positions
+  const sbCenterX = NS_ROAD_LEFT + TILE;    // center of southbound lanes 0-1 (216)
+  const nbCenterX = NS_ROAD_RIGHT - TILE;   // center of northbound lanes 2-3 (264)
+  const ebCenterY = EW_ROAD_TOP + TILE;     // center of eastbound lanes 0-1 (216)
+  const wbCenterY = EW_ROAD_BOTTOM - TILE;  // center of westbound lanes 2-3 (264)
 
-  // South side - signal for northbound traffic
-  const nsBot = new Sprite(sheet.textures["signal_vehicle_green"]);
-  nsBot.x = NS_ROAD_RIGHT + 4;
-  nsBot.y = EW_ROAD_BOTTOM + ZEBRA_WIDTH;
-  layer.addChild(nsBot);
-  nsSignals.push(nsBot);
+  // Crossing edges (outer edge of zebra crossings)
+  const crossingTop = EW_ROAD_TOP - ZEBRA_WIDTH;      // 168
+  const crossingBottom = EW_ROAD_BOTTOM + ZEBRA_WIDTH; // 312
+  const crossingLeft = NS_ROAD_LEFT - ZEBRA_WIDTH;     // 168
+  const crossingRight = NS_ROAD_RIGHT + ZEBRA_WIDTH;   // 312
 
-  // EW signals (at left and right of intersection)
-  const ewLeft = new Sprite(sheet.textures["signal_vehicle_red"]);
-  ewLeft.x = NS_ROAD_LEFT - ZEBRA_WIDTH - TILE - 8;
-  ewLeft.y = EW_ROAD_BOTTOM + 4;
-  layer.addChild(ewLeft);
-  ewSignals.push(ewLeft);
+  // Intersection center
+  const ixCenterX = (NS_ROAD_LEFT + NS_ROAD_RIGHT) / 2; // 240
+  const ixCenterY = (EW_ROAD_TOP + EW_ROAD_BOTTOM) / 2; // 240
 
-  const ewRight = new Sprite(sheet.textures["signal_vehicle_red"]);
-  ewRight.x = NS_ROAD_RIGHT + ZEBRA_WIDTH;
-  ewRight.y = EW_ROAD_TOP - 28;
-  layer.addChild(ewRight);
-  ewSignals.push(ewRight);
+  // ── Vehicle signals (4) — centered over approach lanes, just outside crosswalk ──
 
-  // Pedestrian signals at each crossing
+  // North approach (controls southbound traffic) — NS signal
+  const nsNorth = new Sprite(sheet.textures["signal_vehicle_green"]);
+  nsNorth.anchor.set(0.5, 0.5);
+  nsNorth.x = sbCenterX;
+  nsNorth.y = crossingTop - 4;
+  layer.addChild(nsNorth);
+  nsSignals.push(nsNorth);
+
+  // South approach (controls northbound traffic) — NS signal
+  const nsSouth = new Sprite(sheet.textures["signal_vehicle_green"]);
+  nsSouth.anchor.set(0.5, 0.5);
+  nsSouth.x = nbCenterX;
+  nsSouth.y = crossingBottom + 4;
+  layer.addChild(nsSouth);
+  nsSignals.push(nsSouth);
+
+  // West approach (controls eastbound traffic) — EW signal
+  const ewWest = new Sprite(sheet.textures["signal_vehicle_red"]);
+  ewWest.anchor.set(0.5, 0.5);
+  ewWest.x = crossingLeft - 4;
+  ewWest.y = ebCenterY;
+  layer.addChild(ewWest);
+  ewSignals.push(ewWest);
+
+  // East approach (controls westbound traffic) — EW signal
+  const ewEast = new Sprite(sheet.textures["signal_vehicle_red"]);
+  ewEast.anchor.set(0.5, 0.5);
+  ewEast.x = crossingRight + 4;
+  ewEast.y = wbCenterY;
+  layer.addChild(ewEast);
+  ewSignals.push(ewEast);
+
+  // ── Pedestrian signals (4) — at inner crosswalk edge (intersection side) ──
+
   const pedPositions = [
-    { x: NS_ROAD_LEFT - ZEBRA_WIDTH - 12, y: EW_ROAD_TOP - ZEBRA_WIDTH - 20 },
-    { x: NS_ROAD_RIGHT + ZEBRA_WIDTH + 4, y: EW_ROAD_TOP - ZEBRA_WIDTH - 20 },
-    { x: NS_ROAD_LEFT - ZEBRA_WIDTH - 12, y: EW_ROAD_BOTTOM + ZEBRA_WIDTH },
-    { x: NS_ROAD_RIGHT + ZEBRA_WIDTH + 4, y: EW_ROAD_BOTTOM + ZEBRA_WIDTH },
+    { x: ixCenterX, y: EW_ROAD_TOP - 2 },     // North crosswalk
+    { x: ixCenterX, y: EW_ROAD_BOTTOM + 2 },   // South crosswalk
+    { x: NS_ROAD_LEFT - 2, y: ixCenterY },      // West crosswalk
+    { x: NS_ROAD_RIGHT + 2, y: ixCenterY },     // East crosswalk
   ];
 
   for (const pos of pedPositions) {
     const s = new Sprite(sheet.textures["signal_ped_stop"]);
+    s.anchor.set(0.5, 0.5);
     s.x = pos.x;
     s.y = pos.y;
     layer.addChild(s);
