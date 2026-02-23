@@ -1026,45 +1026,60 @@ function drawTemplateFloor(ctx: CanvasRenderingContext2D, floorY: number, w: num
   // 1px floor separator at bottom
   rect(ctx, 0, floorY + 23, w, 1, darken(wallColor, 0.1));
 
-  // 5×5 windows, uniformly spaced
+  // 5×5 inset windows, uniformly spaced
   const glassColor = isNight ? PALETTE.WINDOW_GLOW : PALETTE.SKY_BLUE;
   const glassHi = isNight ? PALETTE.PURE_WHITE : PALETTE.CYAN;
   const winY = floorY + 10; // vertically centered in 24px
   const margin = w === 40 ? 5 : w === 60 ? 6 : 8;
   for (let wx = margin; wx + 5 <= w - margin; wx += 10) {
-    // Window frame recess
-    rect(ctx, wx, winY, 5, 5, darken(wallColor, 0.2));
-    // Glass
+    // Glass fill
     rect(ctx, wx, winY, 5, 5, glassColor);
-    // Highlight dot top-right
+    // Dark inset frame: top + left edges (shadow = depth)
+    rect(ctx, wx, winY, 5, 1, darken(wallColor, 0.3));
+    rect(ctx, wx, winY + 1, 1, 4, darken(wallColor, 0.3));
+    // Highlight dot top-right corner of glass
     px(ctx, wx + 4, winY, glassHi);
   }
 }
 
 function drawTemplateGroundFloor(ctx: CanvasRenderingContext2D, gfY: number, w: number, config: BuildingConfig, isNight: boolean) {
-  // Top 5px: awning strip
-  rect(ctx, 0, gfY, w, 5, config.awningColor);
-  rect(ctx, 0, gfY, w, 1, lighten(config.awningColor, 0.2));
-  rect(ctx, 0, gfY + 4, w, 1, darken(config.awningColor, 0.2));
+  // Top 6px: awning with 3-tone shading
+  rect(ctx, 0, gfY, w, 6, config.awningColor);
+  rect(ctx, 0, gfY, w, 1, lighten(config.awningColor, 0.2));       // top highlight
+  rect(ctx, 0, gfY, 1, 6, lighten(config.awningColor, 0.15));      // left highlight
+  rect(ctx, 0, gfY + 5, w, 1, darken(config.awningColor, 0.25));   // bottom shadow
+  rect(ctx, w - 1, gfY, 1, 6, darken(config.awningColor, 0.15));   // right shadow
 
-  // Middle 12px: glass storefront default
-  const glass = isNight ? PALETTE.WINDOW_GLOW : PALETTE.SKY_BLUE;
-  rect(ctx, 1, gfY + 5, w - 2, 12, glass);
-  // Diagonal highlight on glass
-  const hi = isNight ? PALETTE.PURE_WHITE : PALETTE.CYAN;
-  for (let i = 0; i < 6; i++) {
-    const hx = 1 + Math.floor(i * (w - 3) / 5);
-    px(ctx, hx, gfY + 5 + Math.min(i, 11), hi);
-  }
+  // Middle 6px: glass storefront with inset frame
+  const glass = isNight ? PALETTE.WINDOW_GLOW : PALETTE.TEAL;
+  rect(ctx, 1, gfY + 6, w - 2, 6, glass);
+  // Inset frame: dark on top + left
+  rect(ctx, 1, gfY + 6, w - 2, 1, darken(glass, 0.3));
+  rect(ctx, 1, gfY + 7, 1, 5, darken(glass, 0.3));
+  // Light catch: bottom + right
+  rect(ctx, 1, gfY + 11, w - 2, 1, lighten(glass, 0.15));
+  rect(ctx, w - 2, gfY + 7, 1, 4, lighten(glass, 0.15));
+  // Highlight dot top-right
+  const hi = isNight ? PALETTE.PURE_WHITE : PALETTE.COOL_GREY;
+  px(ctx, w - 3, gfY + 7, hi);
 
-  // Bottom 7px: dark base strip
-  rect(ctx, 0, gfY + 17, w, 7, darken(config.wallColor, 0.4));
-  rect(ctx, 0, gfY + 17, w, 1, darken(config.wallColor, 0.3));
+  // Awning cast shadow onto glass (2px)
+  ctx.globalAlpha = 0.25;
+  rect(ctx, 1, gfY + 6, w - 2, 2, PALETTE.DARK_NAVY);
+  ctx.globalAlpha = 1.0;
+
+  // Bottom 12px: dark base with 3-tone shading
+  const baseColor = darken(config.wallColor, 0.4);
+  rect(ctx, 0, gfY + 12, w, 12, baseColor);
+  rect(ctx, 0, gfY + 12, w, 1, lighten(baseColor, 0.15));          // top highlight
+  rect(ctx, 0, gfY + 12, 1, 12, lighten(baseColor, 0.1));          // left highlight
+  rect(ctx, w - 1, gfY + 12, 1, 12, darken(baseColor, 0.15));      // right shadow
+  rect(ctx, 0, gfY + 23, w, 1, darken(baseColor, 0.15));           // bottom shadow
 
   // Door
   const doorW = 6;
-  const doorH = 12;
-  const doorY = gfY + 5;
+  const doorH = 8;
+  const doorY = gfY + 6;
   let doorX: number;
   if (config.groundFloor.doorPosition === 'left') doorX = 3;
   else if (config.groundFloor.doorPosition === 'right') doorX = w - doorW - 3;
@@ -1086,29 +1101,39 @@ function drawTemplateGroundFloor(ctx: CanvasRenderingContext2D, gfY: number, w: 
   // Vending machine
   if (config.groundFloor.hasVendingMachine) {
     const vmX = config.groundFloor.doorPosition === 'right' ? 2 : w - 6;
-    drawVendingMachine(ctx, vmX, gfY + 5);
+    drawVendingMachine(ctx, vmX, gfY + 6);
   }
 }
 
 function drawVideoScreenSegment(ctx: CanvasRenderingContext2D, y: number, w: number, h: number,
-  override: NonNullable<BuildingConfig['upperFloorsOverride']>, isNight: boolean) {
-  const screenColor = isNight ? override.screenGlowColor : override.screenColor;
-  rect(ctx, 1, y, w - 2, h, screenColor);
+  override: NonNullable<BuildingConfig['upperFloorsOverride']>, isNight: boolean,
+  colorOverride?: { screenColor: string; screenGlowColor: string }) {
+  const colors = colorOverride ?? override;
+  const screenColor = isNight ? colors.screenGlowColor : colors.screenColor;
+  // Bright base fill
+  rect(ctx, 1, y, w - 2, h, lighten(screenColor, 0.1));
   // 1px inset bezels
-  rect(ctx, 1, y, w - 2, 1, darken(screenColor, 0.3));
-  rect(ctx, 1, y, 1, h, darken(screenColor, 0.3));
-  rect(ctx, w - 2, y, 1, h, lighten(screenColor, 0.1));
-  rect(ctx, 1, y + h - 1, w - 2, 1, lighten(screenColor, 0.1));
-  // Horizontal scanlines every 4px
+  rect(ctx, 1, y, w - 2, 1, darken(screenColor, 0.2));
+  rect(ctx, 1, y, 1, h, darken(screenColor, 0.2));
+  rect(ctx, w - 2, y, 1, h, lighten(screenColor, 0.15));
+  rect(ctx, 1, y + h - 1, w - 2, 1, lighten(screenColor, 0.15));
+  // Scanline gaps: lighter instead of darker for bright-screen look
   for (let sy = y + 2; sy < y + h - 1; sy += 4) {
-    ctx.globalAlpha = 0.08;
-    rect(ctx, 2, sy, w - 4, 1, PALETTE.DARK_NAVY);
+    ctx.globalAlpha = 0.15;
+    rect(ctx, 2, sy, w - 4, 1, lighten(screenColor, 0.3));
     ctx.globalAlpha = 1.0;
   }
-  // Night: highlight dots top-left
+  // Highlight/glow dots scattered across the screen
+  px(ctx, 2, y + 1, PALETTE.PURE_WHITE);
+  px(ctx, w - 3, y + 1, PALETTE.PURE_WHITE);
+  px(ctx, Math.floor(w / 2), y + Math.floor(h / 2), PALETTE.PURE_WHITE);
   if (isNight) {
-    px(ctx, 2, y + 1, PALETTE.PURE_WHITE);
+    // Extra glow dots at night
     px(ctx, 3, y + 1, PALETTE.PURE_WHITE);
+    px(ctx, 4, y + 2, PALETTE.PURE_WHITE);
+    px(ctx, w - 4, y + 2, PALETTE.PURE_WHITE);
+    px(ctx, Math.floor(w / 2) - 1, y + Math.floor(h / 2) - 1, PALETTE.PURE_WHITE);
+    px(ctx, Math.floor(w / 2) + 1, y + Math.floor(h / 2) + 1, PALETTE.PURE_WHITE);
   }
 }
 
@@ -1210,7 +1235,8 @@ function drawBuildingFromTemplate(config: BuildingConfig, isNight: boolean) {
 
 // ── North-Facing Buildings (Front-Face Hero View) ──
 
-function drawBuildingNorth(config: BuildingConfig, isNight: boolean) {
+function drawBuildingNorth(config: BuildingConfig, isNight: boolean,
+  nameSuffix?: string, screenColorOverride?: { screenColor: string; screenGlowColor: string }) {
   const W = config.width;
   const extraRoof = getExtraRoof(config.floors);
   const baseH = config.heightOverride ?? (12 + 24 * config.floors);
@@ -1222,13 +1248,17 @@ function drawBuildingNorth(config: BuildingConfig, isNight: boolean) {
   if (config.floors === 0) {
     // Subway: same rendering as current, no extra roof
     rect(ctx, 0, 0, W, H, config.wallColor);
-    rect(ctx, 0, 0, W, 5, config.awningColor);
+    rect(ctx, 0, 0, W, 6, config.awningColor);
     rect(ctx, 0, 0, W, 1, lighten(config.awningColor, 0.2));
-    rect(ctx, 4, 6, W - 8, H - 8, PALETTE.DARK_NAVY);
-    rect(ctx, 4, 6, W - 8, 1, darken(PALETTE.DARK_NAVY, 0.2));
-    rect(ctx, 3, 6, 1, H - 8, PALETTE.COOL_GREY);
-    rect(ctx, W - 4, 6, 1, H - 8, PALETTE.COOL_GREY);
+    rect(ctx, 4, 7, W - 8, H - 9, PALETTE.DARK_NAVY);
+    rect(ctx, 4, 7, W - 8, 1, darken(PALETTE.DARK_NAVY, 0.2));
+    rect(ctx, 3, 7, 1, H - 9, PALETTE.COOL_GREY);
+    rect(ctx, W - 4, 7, 1, H - 9, PALETTE.COOL_GREY);
     if (config.decorateGround) config.decorateGround(ctx, 0, W, isNight);
+    // Subtle right-edge shadow for building separation
+    ctx.globalAlpha = 0.4;
+    rect(ctx, W - 1, 0, 1, H, PALETTE.DARK_NAVY);
+    ctx.globalAlpha = 1.0;
     const name = `bldg_${config.id}_n${isNight ? '_night' : ''}`;
     addFrame(name, c, W, H);
     return;
@@ -1248,7 +1278,7 @@ function drawBuildingNorth(config: BuildingConfig, isNight: boolean) {
     if (config.upperFloorsOverride &&
         f >= config.upperFloorsOverride.fromFloor &&
         f <= config.upperFloorsOverride.toFloor) {
-      drawVideoScreenSegment(ctx, floorY, W, 24, config.upperFloorsOverride, isNight);
+      drawVideoScreenSegment(ctx, floorY, W, 24, config.upperFloorsOverride, isNight, screenColorOverride);
     } else {
       drawTemplateFloor(ctx, floorY, W, config.wallColor, isNight);
     }
@@ -1261,7 +1291,13 @@ function drawBuildingNorth(config: BuildingConfig, isNight: boolean) {
   // 5. Per-building decoration
   if (config.decorateGround) config.decorateGround(ctx, gfY, W, isNight);
 
-  const name = `bldg_${config.id}_n${isNight ? '_night' : ''}`;
+  // 6. Subtle right-edge shadow for building separation
+  ctx.globalAlpha = 0.4;
+  rect(ctx, W - 1, 0, 1, H, PALETTE.DARK_NAVY);
+  ctx.globalAlpha = 1.0;
+
+  const suffix = nameSuffix ?? '';
+  const name = `bldg_${config.id}_n${suffix}${isNight ? '_night' : ''}`;
   addFrame(name, c, W, H);
 }
 
@@ -1355,7 +1391,7 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
       // "109" sign panel on awning
       const tw = pixelTextWidth("109");
       const tx = Math.floor((W - tw) / 2);
-      rect(ctx, tx - 2, gfY, tw + 4, 5, PALETTE.BLDG_109_DARK);
+      rect(ctx, tx - 2, gfY, tw + 4, 6, PALETTE.BLDG_109_DARK);
       drawPixelText(ctx, tx, gfY - 10, "109", PALETTE.NEAR_WHITE);
     },
     decorateSouth(ctx, W, H, isNight) {
@@ -1378,9 +1414,9 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
       // "STARBUCKS" on awning
       drawPixelText(ctx, 6, gfY + 2, "STARBUCKS", PALETTE.NEAR_WHITE);
       // Green circle logo on glass
-      rect(ctx, 24, gfY + 7, 6, 6, PALETTE.FOREST_GREEN);
-      rect(ctx, 25, gfY + 8, 4, 4, PALETTE.NEAR_WHITE);
-      rect(ctx, 26, gfY + 9, 2, 2, PALETTE.FOREST_GREEN);
+      rect(ctx, 24, gfY + 7, 5, 5, PALETTE.FOREST_GREEN);
+      rect(ctx, 25, gfY + 8, 3, 3, PALETTE.NEAR_WHITE);
+      px(ctx, 26, gfY + 9, PALETTE.FOREST_GREEN);
     },
     decorateSouth(ctx, W, H, isNight) {
       const roofY = 3, roofH = H - 3 - 8;
@@ -1431,10 +1467,10 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
       rect(ctx, 3, gfY + 1, 6, 4, PALETTE.FOREST_GREEN);
       drawPixelText(ctx, 11, gfY + 2, "JR", PALETTE.NEAR_WHITE);
       // Wide entrance with gate bars
-      rect(ctx, 8, gfY + 5, W - 16, 12, darken(PALETTE.STATION_WALL, 0.3));
+      rect(ctx, 8, gfY + 6, W - 16, 10, darken(PALETTE.STATION_WALL, 0.3));
       // Gate bar pattern
       for (let gx = 10; gx < W - 10; gx += 5) {
-        rect(ctx, gx, gfY + 5, 1, 12, PALETTE.COOL_GREY);
+        rect(ctx, gx, gfY + 6, 1, 10, PALETTE.COOL_GREY);
       }
     },
     decorateSouth(ctx, W, H, isNight) {
@@ -1462,10 +1498,10 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
     awningColor: PALETTE.FOREST_GREEN,
     groundFloor: { type: 'convenience', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
     decorateGround(ctx, gfY, W, isNight) {
-      // Triple-stripe awning: green / white / blue (scaled to 5px awning)
+      // Triple-stripe awning: green / white / blue (scaled to 6px awning)
       rect(ctx, 0, gfY, W, 2, PALETTE.FOREST_GREEN);
-      rect(ctx, 0, gfY + 2, W, 1, PALETTE.NEAR_WHITE);
-      rect(ctx, 0, gfY + 3, W, 2, PALETTE.BRIGHT_BLUE);
+      rect(ctx, 0, gfY + 2, W, 2, PALETTE.NEAR_WHITE);
+      rect(ctx, 0, gfY + 4, W, 2, PALETTE.BRIGHT_BLUE);
       drawPixelText(ctx, 8, gfY + 2, "FM", PALETTE.NEAR_WHITE);
     },
   },
@@ -1477,10 +1513,10 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
     awningColor: PALETTE.WARM_ORANGE,
     groundFloor: { type: 'convenience', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
     decorateGround(ctx, gfY, W, isNight) {
-      // Orange/green/red stripe awning (scaled to 5px)
+      // Orange/green/red stripe awning (scaled to 6px)
       rect(ctx, 0, gfY, W, 2, PALETTE.WARM_ORANGE);
-      rect(ctx, 0, gfY + 2, W, 1, PALETTE.FOREST_GREEN);
-      rect(ctx, 0, gfY + 3, W, 2, PALETTE.CRIMSON);
+      rect(ctx, 0, gfY + 2, W, 2, PALETTE.FOREST_GREEN);
+      rect(ctx, 0, gfY + 4, W, 2, PALETTE.CRIMSON);
       // Big "7" on shopfront glass — 6px tall bold
       const sevenGlyph = [0b111111, 0b000001, 0b000010, 0b000100, 0b001000, 0b010000];
       const sevenX = Math.floor((W - 6) / 2);
@@ -1488,7 +1524,7 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
       for (let row = 0; row < 6; row++) {
         const bits = sevenGlyph[row];
         for (let bit = 0; bit < 6; bit++) {
-          if (bits & (1 << (5 - bit))) px(ctx, sevenX + bit, gfY + 7 + row, color);
+          if (bits & (1 << (5 - bit))) px(ctx, sevenX + bit, gfY + 6 + row, color);
         }
       }
     },
@@ -1510,32 +1546,26 @@ const BUILDING_CONFIGS: BuildingConfig[] = [
       px(ctx, 13, gfY + 2, PALETTE.NEAR_WHITE);
       // Noren curtain bars (scaled)
       for (let nx = 4; nx < W - 4; nx += 4) {
-        rect(ctx, nx, gfY + 5, 3, 8, PALETTE.CRIMSON);
-        rect(ctx, nx, gfY + 5, 3, 1, lighten(PALETTE.CRIMSON, 0.2));
+        rect(ctx, nx, gfY + 6, 3, 6, PALETTE.CRIMSON);
+        rect(ctx, nx, gfY + 6, 3, 1, lighten(PALETTE.CRIMSON, 0.2));
       }
     },
   },
-  // 9. Office A — Warm grey wall, dark awning, plain glass
+  // 9. Office A — Warm grey wall, dark awning, plain glass (no text)
   {
     id: 'office_a', width: 60, floors: 3,
     wallColor: PALETTE.STORE_WALL_A,
     roofColor: darken(PALETTE.STORE_WALL_A, 0.2),
     awningColor: PALETTE.CHARCOAL,
     groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
-    decorateGround(ctx, gfY, W, isNight) {
-      drawPixelText(ctx, 10, gfY + 2, "BLDG", PALETTE.COOL_GREY);
-    },
   },
-  // 10. Office B — Cool grey wall, blue awning, plain glass
+  // 10. Office B — Cool grey wall, dark slate awning, plain glass (no text)
   {
     id: 'office_b', width: 60, floors: 3,
     wallColor: PALETTE.STORE_WALL_B,
     roofColor: darken(PALETTE.STORE_WALL_B, 0.2),
-    awningColor: PALETTE.BRIGHT_BLUE,
+    awningColor: PALETTE.SLATE,
     groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
-    decorateGround(ctx, gfY, W, isNight) {
-      drawPixelText(ctx, 14, gfY + 2, "OFC", PALETTE.COOL_GREY);
-    },
   },
   // 11. Pachinko — Golden wall, colorful signage rectangles
   {
@@ -1608,16 +1638,205 @@ function generateVerticalSigns() {
 
 // ── Main Buildings Generator ──
 
+// QFront screen color variants for cycling animation
+const QFRONT_SCREEN_VARIANTS = [
+  { screenColor: '#41a6f6', screenGlowColor: '#73eff7' }, // c0: vivid blue / bright cyan
+  { screenColor: '#ef7d8e', screenGlowColor: '#ff6b9d' }, // c1: hot pink / bright pink
+  { screenColor: '#a7f070', screenGlowColor: '#8aff70' }, // c2: lime green / bright green
+  { screenColor: '#ffcd75', screenGlowColor: '#f7e476' }, // c3: warm yellow / bright gold
+];
+
 function generateBuildings() {
   // Generate all 12 buildings × 4 (north/south × day/night)
   for (const config of BUILDING_CONFIGS) {
-    drawBuildingNorth(config, false);
-    drawBuildingNorth(config, true);
-    drawBuildingSouth(config, false);
-    drawBuildingSouth(config, true);
+    if (config.id === 'qfront') {
+      // QFront north: generate 4 color variants instead of single pair
+      for (let i = 0; i < QFRONT_SCREEN_VARIANTS.length; i++) {
+        drawBuildingNorth(config, false, `_c${i}`, QFRONT_SCREEN_VARIANTS[i]);
+        drawBuildingNorth(config, true, `_c${i}`, QFRONT_SCREEN_VARIANTS[i]);
+      }
+      // South stays unchanged (single pair)
+      drawBuildingSouth(config, false);
+      drawBuildingSouth(config, true);
+    } else {
+      drawBuildingNorth(config, false);
+      drawBuildingNorth(config, true);
+      drawBuildingSouth(config, false);
+      drawBuildingSouth(config, true);
+    }
   }
   // Generate vertical sign sprites
   generateVerticalSigns();
+}
+
+
+// ---- Vegetation ----
+function generateVegetation() {
+  // veg_tree: 20×40 — street tree with round canopy
+  {
+    const W = 20, H = 40;
+    const [c, ctx] = createPixelCanvas(W, H);
+    // Tree pit at base
+    rect(ctx, 3, H - 3, 14, 3, PALETTE.CHARCOAL);
+    // Trunk: 4px wide, 12px tall, centered
+    const trunkX = 8, trunkW = 4, trunkH = 12;
+    const trunkY = H - 3 - trunkH;
+    rect3(ctx, trunkX, trunkY, trunkW, trunkH, PALETTE.SKIN_TAN);
+    // Canopy: rounded oval filling upper portion
+    const canopyBase = PALETTE.FOREST_GREEN;
+    const canopyHi = PALETTE.LIME;
+    const canopySh = darken(canopyBase, 0.25);
+    // Draw canopy as stacked rows for a round shape
+    const canopyCY = 12, canopyRX = 9, canopyRY = 12;
+    for (let dy = -canopyRY; dy <= canopyRY; dy++) {
+      const py = canopyCY + dy;
+      if (py < 0 || py >= trunkY) continue;
+      const halfW = Math.round(canopyRX * Math.sqrt(1 - (dy * dy) / (canopyRY * canopyRY)));
+      const x0 = W / 2 - halfW, x1 = W / 2 + halfW;
+      rect(ctx, x0, py, x1 - x0, 1, canopyBase);
+    }
+    // Highlight on top-left quadrant
+    for (let dy = -canopyRY; dy <= -2; dy++) {
+      const py = canopyCY + dy;
+      if (py < 0 || py >= trunkY) continue;
+      const halfW = Math.round(canopyRX * Math.sqrt(1 - (dy * dy) / (canopyRY * canopyRY)));
+      const x0 = W / 2 - halfW;
+      const hiW = Math.max(1, Math.floor(halfW * 0.6));
+      rect(ctx, x0, py, hiW, 1, canopyHi);
+    }
+    // Shadow on bottom-right
+    for (let dy = 2; dy <= canopyRY; dy++) {
+      const py = canopyCY + dy;
+      if (py < 0 || py >= trunkY) continue;
+      const halfW = Math.round(canopyRX * Math.sqrt(1 - (dy * dy) / (canopyRY * canopyRY)));
+      const x1 = W / 2 + halfW;
+      const shW = Math.max(1, Math.floor(halfW * 0.4));
+      rect(ctx, x1 - shW, py, shW, 1, canopySh);
+    }
+    addFrame("veg_tree", c, W, H);
+  }
+
+  // veg_tree_sm: 14×28 — small street tree
+  {
+    const W = 14, H = 28;
+    const [c, ctx] = createPixelCanvas(W, H);
+    // Tree pit
+    rect(ctx, 2, H - 2, 10, 2, PALETTE.CHARCOAL);
+    // Trunk: 2px wide, 8px tall
+    const trunkX = 6, trunkW = 2, trunkH = 8;
+    const trunkY = H - 2 - trunkH;
+    rect3(ctx, trunkX, trunkY, trunkW, trunkH, PALETTE.SKIN_TAN);
+    // Canopy
+    const canopyBase = PALETTE.FOREST_GREEN;
+    const canopyHi = PALETTE.LIME;
+    const canopySh = darken(canopyBase, 0.25);
+    const canopyCY = 8, canopyRX = 6, canopyRY = 8;
+    for (let dy = -canopyRY; dy <= canopyRY; dy++) {
+      const py = canopyCY + dy;
+      if (py < 0 || py >= trunkY) continue;
+      const halfW = Math.round(canopyRX * Math.sqrt(1 - (dy * dy) / (canopyRY * canopyRY)));
+      const x0 = W / 2 - halfW, x1 = W / 2 + halfW;
+      rect(ctx, x0, py, x1 - x0, 1, canopyBase);
+    }
+    // Highlight
+    for (let dy = -canopyRY; dy <= -2; dy++) {
+      const py = canopyCY + dy;
+      if (py < 0 || py >= trunkY) continue;
+      const halfW = Math.round(canopyRX * Math.sqrt(1 - (dy * dy) / (canopyRY * canopyRY)));
+      const x0 = W / 2 - halfW;
+      const hiW = Math.max(1, Math.floor(halfW * 0.5));
+      rect(ctx, x0, py, hiW, 1, canopyHi);
+    }
+    // Shadow
+    for (let dy = 2; dy <= canopyRY; dy++) {
+      const py = canopyCY + dy;
+      if (py < 0 || py >= trunkY) continue;
+      const halfW = Math.round(canopyRX * Math.sqrt(1 - (dy * dy) / (canopyRY * canopyRY)));
+      const x1 = W / 2 + halfW;
+      const shW = Math.max(1, Math.floor(halfW * 0.4));
+      rect(ctx, x1 - shW, py, shW, 1, canopySh);
+    }
+    addFrame("veg_tree_sm", c, W, H);
+  }
+
+  // veg_bush: 20×12 — ground-level hedge/bush
+  {
+    const W = 20, H = 12;
+    const [c, ctx] = createPixelCanvas(W, H);
+    const base = PALETTE.FOREST_GREEN;
+    const hi = PALETTE.LIME;
+    const sh = darken(base, 0.25);
+    // Rounded rectangle body
+    const bushRX = 9, bushRY = 5, bushCY = 6;
+    for (let dy = -bushRY; dy <= bushRY; dy++) {
+      const py = bushCY + dy;
+      if (py < 0 || py >= H) continue;
+      const halfW = Math.round(bushRX * Math.sqrt(1 - (dy * dy) / (bushRY * bushRY)));
+      const x0 = W / 2 - halfW, x1 = W / 2 + halfW;
+      rect(ctx, x0, py, x1 - x0, 1, base);
+    }
+    // Highlight on top
+    for (let dy = -bushRY; dy <= -2; dy++) {
+      const py = bushCY + dy;
+      if (py < 0) continue;
+      const halfW = Math.round(bushRX * Math.sqrt(1 - (dy * dy) / (bushRY * bushRY)));
+      const x0 = W / 2 - halfW;
+      rect(ctx, x0, py, Math.max(1, Math.floor(halfW * 0.6)), 1, hi);
+    }
+    // Shadow on bottom
+    for (let dy = 2; dy <= bushRY; dy++) {
+      const py = bushCY + dy;
+      if (py >= H) continue;
+      const halfW = Math.round(bushRX * Math.sqrt(1 - (dy * dy) / (bushRY * bushRY)));
+      const x1 = W / 2 + halfW;
+      rect(ctx, x1 - Math.max(1, Math.floor(halfW * 0.4)), py, Math.max(1, Math.floor(halfW * 0.4)), 1, sh);
+    }
+    // Leaf texture dots
+    for (let py = 2; py < H - 2; py += 3) {
+      for (let px_ = 3 + ((py % 2) * 2); px_ < W - 3; px_ += 5) {
+        px(ctx, px_, py, darken(base, 0.12));
+      }
+    }
+    addFrame("veg_bush", c, W, H);
+  }
+
+  // veg_planter: 20×16 — concrete planter box with plant mound
+  {
+    const W = 20, H = 16;
+    const [c, ctx] = createPixelCanvas(W, H);
+    // Concrete box (bottom 8px)
+    rect3(ctx, 0, 8, W, 8, PALETTE.COOL_GREY);
+    // Plant mound (top 8px) — dome shape
+    const base = PALETTE.FOREST_GREEN;
+    const hi = PALETTE.LIME;
+    const sh = darken(base, 0.25);
+    const moundRX = 9, moundRY = 7, moundCY = 4;
+    for (let dy = -moundRY; dy <= 0; dy++) {
+      const py = moundCY + dy;
+      if (py < 0) continue;
+      const halfW = Math.round(moundRX * Math.sqrt(1 - (dy * dy) / (moundRY * moundRY)));
+      const x0 = W / 2 - halfW, x1 = W / 2 + halfW;
+      rect(ctx, x0, py, x1 - x0, 1, base);
+    }
+    // Fill rest of plant area above box
+    rect(ctx, 1, moundCY + 1, W - 2, 8 - moundCY - 1, base);
+    // Highlight
+    for (let dy = -moundRY; dy <= -3; dy++) {
+      const py = moundCY + dy;
+      if (py < 0) continue;
+      const halfW = Math.round(moundRX * Math.sqrt(1 - (dy * dy) / (moundRY * moundRY)));
+      const x0 = W / 2 - halfW;
+      rect(ctx, x0, py, Math.max(1, Math.floor(halfW * 0.5)), 1, hi);
+    }
+    // Shadow on right
+    for (let dy = -2; dy <= 0; dy++) {
+      const py = moundCY + dy;
+      const halfW = Math.round(moundRX * Math.sqrt(1 - (dy * dy) / (moundRY * moundRY)));
+      const x1 = W / 2 + halfW;
+      rect(ctx, x1 - Math.max(1, Math.floor(halfW * 0.3)), py, Math.max(1, Math.floor(halfW * 0.3)), 1, sh);
+    }
+    addFrame("veg_planter", c, W, H);
+  }
 }
 
 
@@ -1694,6 +1913,10 @@ function main() {
   const prevCount5 = frames.length;
   generateBuildings();
   console.log(`  Buildings: ${frames.length - prevCount5} frames`);
+
+  const prevCount6 = frames.length;
+  generateVegetation();
+  console.log(`  Vegetation: ${frames.length - prevCount6} frames`);
 
   console.log(`Total: ${frames.length} frames`);
 

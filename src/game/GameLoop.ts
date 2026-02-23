@@ -6,6 +6,7 @@ import { updateTrafficLight, placeTrafficLightSprites } from "../systems/Traffic
 import { updateSpawner } from "../systems/Spawner";
 import { updateMovement } from "../systems/Movement";
 import { updateLighting } from "../systems/Lighting";
+import { updateQFrontScreen } from "../systems/QFrontScreen";
 
 export function createGameLoop(
   ticker: Ticker,
@@ -34,5 +35,8 @@ export function createGameLoop(
 
     // Update lighting
     updateLighting(state, layers);
+
+    // Animate QFront video screen
+    updateQFrontScreen(state, dt, layers, sheet);
   });
 }

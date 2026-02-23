@@ -1,4 +1,4 @@
-import { Container, Spritesheet } from "pixi.js";
+import { Container, Sprite, Spritesheet } from "pixi.js";
 import { buildRoad } from "./Road";
 import { buildBuildingsBg, buildBuildingsFg } from "./Buildings";
 
@@ -11,13 +11,14 @@ export interface SceneLayers {
   trafficLight: Container;
   buildingFg: Container;
   ui: Container;
+  qfrontSprite: Sprite | null;
 }
 
 export function buildScene(sheet: Spritesheet): SceneLayers {
   const root = new Container();
 
   // 7 layers, bottom to top
-  const buildingBg = buildBuildingsBg(sheet);
+  const { container: buildingBg, qfrontSprite } = buildBuildingsBg(sheet);
   const road = buildRoad(sheet);
   const vehicle = new Container();
   vehicle.sortableChildren = true;
@@ -36,5 +37,5 @@ export function buildScene(sheet: Spritesheet): SceneLayers {
   root.addChild(buildingFg);
   root.addChild(ui);
 
-  return { root, buildingBg, road, vehicle, pedestrian, trafficLight, buildingFg, ui };
+  return { root, buildingBg, road, vehicle, pedestrian, trafficLight, buildingFg, ui, qfrontSprite };
 }
