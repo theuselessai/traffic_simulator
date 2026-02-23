@@ -1,32 +1,33 @@
 import { Container, Sprite, Spritesheet } from "pixi.js";
 
-// Layout constants for 480x480 scene
-export const SCENE_W = 480;
-export const SCENE_H = 480;
-export const TILE = 24;
-export const LANE_W = TILE; // 24px per lane
+// Layout constants for 800x400 cinematic viewport
+export const SCENE_W = 800;
+export const SCENE_H = 400;
+export const TILE = 20;
+export const LANE_W = TILE; // 20px per lane
 export const ROAD_LANES = 4; // 4 lanes per road
-export const ROAD_W = LANE_W * ROAD_LANES; // 96px
+export const ROAD_W = LANE_W * ROAD_LANES; // 80px
+export const SIDEWALK_W = 14; // narrow sidewalk strips
 
-// Intersection center
-export const IX_CENTER_X = SCENE_W / 2; // 240
-export const IX_CENTER_Y = SCENE_H / 2; // 240
+// Intersection center (shifted up for taller south-side buildings)
+export const IX_CENTER_X = SCENE_W / 2; // 400
+export const IX_CENTER_Y = 160;
 
 // Road boundaries
 // NS road: lanes run vertically
-export const NS_ROAD_LEFT = IX_CENTER_X - ROAD_W / 2; // 192
-export const NS_ROAD_RIGHT = IX_CENTER_X + ROAD_W / 2; // 288
+export const NS_ROAD_LEFT = IX_CENTER_X - ROAD_W / 2; // 360
+export const NS_ROAD_RIGHT = IX_CENTER_X + ROAD_W / 2; // 440
 
 // EW road: lanes run horizontally
-export const EW_ROAD_TOP = IX_CENTER_Y - ROAD_W / 2; // 192
-export const EW_ROAD_BOTTOM = IX_CENTER_Y + ROAD_W / 2; // 288
+export const EW_ROAD_TOP = IX_CENTER_Y - ROAD_W / 2; // 120
+export const EW_ROAD_BOTTOM = IX_CENTER_Y + ROAD_W / 2; // 200
 
 // Zebra crossings (outside the intersection)
-export const ZEBRA_WIDTH = TILE; // 24px wide crossing
+export const ZEBRA_WIDTH = 2 * TILE; // 40px
 
-// Stop lines
-export const STOP_LINE_N = EW_ROAD_TOP - ZEBRA_WIDTH - TILE; // vehicles stop here going south
-export const STOP_LINE_S = EW_ROAD_BOTTOM + ZEBRA_WIDTH; // vehicles stop here going north
+// Stop lines (one tile before zebra crossing)
+export const STOP_LINE_N = EW_ROAD_TOP - ZEBRA_WIDTH - TILE;
+export const STOP_LINE_S = EW_ROAD_BOTTOM + ZEBRA_WIDTH;
 export const STOP_LINE_W = NS_ROAD_LEFT - ZEBRA_WIDTH - TILE;
 export const STOP_LINE_E = NS_ROAD_RIGHT + ZEBRA_WIDTH;
 
@@ -140,10 +141,10 @@ export function buildRoad(sheet: Spritesheet): Container {
     container.addChild(s);
   }
 
-  // Diagonal crossings through intersection
+  // Diagonal crossings through intersection (scramble)
   {
+    const diagTiles = ROAD_W / TILE; // 4 tiles
     // NW-SE diagonal
-    const diagTiles = Math.ceil(ROAD_W / TILE);
     for (let i = 0; i < diagTiles; i++) {
       const s = new Sprite(sheet.textures["zebra_diag_nwse"]);
       s.x = NS_ROAD_LEFT + i * TILE;

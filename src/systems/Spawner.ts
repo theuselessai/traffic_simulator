@@ -5,7 +5,7 @@ import type { Entity, Direction, PedDirection } from "../entities/Entity";
 import {
   SCENE_W, SCENE_H, nsLaneX, ewLaneY,
   NS_ROAD_LEFT, NS_ROAD_RIGHT, EW_ROAD_TOP, EW_ROAD_BOTTOM,
-  IX_CENTER_X, IX_CENTER_Y
+  IX_CENTER_X, IX_CENTER_Y, ZEBRA_WIDTH
 } from "../scene/Road";
 import { canPedestriansGo, isPedestrianFlashing } from "./TrafficLight";
 
@@ -169,79 +169,85 @@ interface CrossingPath {
 
 function getPedestrianPaths(): CrossingPath[] {
   const paths: CrossingPath[] = [];
-  const offset = () => (Math.random() - 0.5) * 20;
+  const offset = () => (Math.random() - 0.5) * 12;
 
-  // N-S crossings (west side)
+  // Gathering points (just outside zebra crossings, on sidewalks)
+  const pedNorth = EW_ROAD_TOP - ZEBRA_WIDTH - 6;   // ~74
+  const pedSouth = EW_ROAD_BOTTOM + ZEBRA_WIDTH + 6; // ~246
+  const pedWest = NS_ROAD_LEFT - ZEBRA_WIDTH - 6;    // ~314
+  const pedEast = NS_ROAD_RIGHT + ZEBRA_WIDTH + 6;   // ~486
+
+  // N-S crossings (west zebra — pedestrians walk through west side)
   paths.push({
-    startX: NS_ROAD_LEFT - 20 + offset(), startY: EW_ROAD_TOP - 48,
-    endX: NS_ROAD_LEFT - 20 + offset(), endY: EW_ROAD_BOTTOM + 48,
+    startX: NS_ROAD_LEFT - 20 + offset(), startY: pedNorth,
+    endX: NS_ROAD_LEFT - 20 + offset(), endY: pedSouth,
     dir: "s"
   });
   paths.push({
-    startX: NS_ROAD_LEFT - 20 + offset(), startY: EW_ROAD_BOTTOM + 48,
-    endX: NS_ROAD_LEFT - 20 + offset(), endY: EW_ROAD_TOP - 48,
+    startX: NS_ROAD_LEFT - 20 + offset(), startY: pedSouth,
+    endX: NS_ROAD_LEFT - 20 + offset(), endY: pedNorth,
     dir: "n"
   });
 
-  // N-S crossings (east side)
+  // N-S crossings (east zebra)
   paths.push({
-    startX: NS_ROAD_RIGHT + 20 + offset(), startY: EW_ROAD_TOP - 48,
-    endX: NS_ROAD_RIGHT + 20 + offset(), endY: EW_ROAD_BOTTOM + 48,
+    startX: NS_ROAD_RIGHT + 20 + offset(), startY: pedNorth,
+    endX: NS_ROAD_RIGHT + 20 + offset(), endY: pedSouth,
     dir: "s"
   });
   paths.push({
-    startX: NS_ROAD_RIGHT + 20 + offset(), startY: EW_ROAD_BOTTOM + 48,
-    endX: NS_ROAD_RIGHT + 20 + offset(), endY: EW_ROAD_TOP - 48,
+    startX: NS_ROAD_RIGHT + 20 + offset(), startY: pedSouth,
+    endX: NS_ROAD_RIGHT + 20 + offset(), endY: pedNorth,
     dir: "n"
   });
 
-  // E-W crossings (north side)
+  // E-W crossings (north zebra)
   paths.push({
-    startX: NS_ROAD_LEFT - 48, startY: EW_ROAD_TOP - 20 + offset(),
-    endX: NS_ROAD_RIGHT + 48, endY: EW_ROAD_TOP - 20 + offset(),
+    startX: pedWest, startY: EW_ROAD_TOP - 20 + offset(),
+    endX: pedEast, endY: EW_ROAD_TOP - 20 + offset(),
     dir: "e"
   });
   paths.push({
-    startX: NS_ROAD_RIGHT + 48, startY: EW_ROAD_TOP - 20 + offset(),
-    endX: NS_ROAD_LEFT - 48, endY: EW_ROAD_TOP - 20 + offset(),
+    startX: pedEast, startY: EW_ROAD_TOP - 20 + offset(),
+    endX: pedWest, endY: EW_ROAD_TOP - 20 + offset(),
     dir: "w"
   });
 
-  // E-W crossings (south side)
+  // E-W crossings (south zebra)
   paths.push({
-    startX: NS_ROAD_LEFT - 48, startY: EW_ROAD_BOTTOM + 20 + offset(),
-    endX: NS_ROAD_RIGHT + 48, endY: EW_ROAD_BOTTOM + 20 + offset(),
+    startX: pedWest, startY: EW_ROAD_BOTTOM + 20 + offset(),
+    endX: pedEast, endY: EW_ROAD_BOTTOM + 20 + offset(),
     dir: "e"
   });
   paths.push({
-    startX: NS_ROAD_RIGHT + 48, startY: EW_ROAD_BOTTOM + 20 + offset(),
-    endX: NS_ROAD_LEFT - 48, endY: EW_ROAD_BOTTOM + 20 + offset(),
+    startX: pedEast, startY: EW_ROAD_BOTTOM + 20 + offset(),
+    endX: pedWest, endY: EW_ROAD_BOTTOM + 20 + offset(),
     dir: "w"
   });
 
-  // Diagonal crossings
+  // Diagonal crossings (scramble)
   // NW -> SE
   paths.push({
-    startX: NS_ROAD_LEFT - 32, startY: EW_ROAD_TOP - 32,
-    endX: NS_ROAD_RIGHT + 32, endY: EW_ROAD_BOTTOM + 32,
+    startX: NS_ROAD_LEFT - 24, startY: EW_ROAD_TOP - 24,
+    endX: NS_ROAD_RIGHT + 24, endY: EW_ROAD_BOTTOM + 24,
     dir: "se"
   });
   // SE -> NW
   paths.push({
-    startX: NS_ROAD_RIGHT + 32, startY: EW_ROAD_BOTTOM + 32,
-    endX: NS_ROAD_LEFT - 32, endY: EW_ROAD_TOP - 32,
+    startX: NS_ROAD_RIGHT + 24, startY: EW_ROAD_BOTTOM + 24,
+    endX: NS_ROAD_LEFT - 24, endY: EW_ROAD_TOP - 24,
     dir: "nw"
   });
   // NE -> SW
   paths.push({
-    startX: NS_ROAD_RIGHT + 32, startY: EW_ROAD_TOP - 32,
-    endX: NS_ROAD_LEFT - 32, endY: EW_ROAD_BOTTOM + 32,
+    startX: NS_ROAD_RIGHT + 24, startY: EW_ROAD_TOP - 24,
+    endX: NS_ROAD_LEFT - 24, endY: EW_ROAD_BOTTOM + 24,
     dir: "sw"
   });
   // SW -> NE
   paths.push({
-    startX: NS_ROAD_LEFT - 32, startY: EW_ROAD_BOTTOM + 32,
-    endX: NS_ROAD_RIGHT + 32, endY: EW_ROAD_TOP - 32,
+    startX: NS_ROAD_LEFT - 24, startY: EW_ROAD_BOTTOM + 24,
+    endX: NS_ROAD_RIGHT + 24, endY: EW_ROAD_TOP - 24,
     dir: "ne"
   });
 
