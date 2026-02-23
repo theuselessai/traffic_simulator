@@ -280,19 +280,10 @@ function generateRoadTiles() {
     addFrame("road_lane_v", c, T, T);
   }
 
-  // Zebra crossing horizontal (E-W bars)
-  {
-    const [c, ctx] = createPixelCanvas(T, T);
-    rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
-    for (let i = 0; i < T; i += 4) {
-      rect(ctx, i, 0, 2, T, PALETTE.ZEBRA_WHITE);
-      // Highlight top edge, shadow bottom edge of each bar
-      rect(ctx, i, 0, 2, 1, PALETTE.PURE_WHITE);
-    }
-    addFrame("zebra_h", c, T, T);
-  }
-
-  // Zebra crossing vertical (N-S bars — slightly wider, perpendicular to viewer)
+  // Zebra tile: horizontal bars (E-W bars, stacked vertically)
+  // Used for crossings where pedestrians walk N-S (east & west sides)
+  // Bars are PARALLEL to the EW road = PERPENDICULAR to the walking direction
+  // 3px tall bars, 2px gap = 5px period
   {
     const [c, ctx] = createPixelCanvas(T, T);
     rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
@@ -301,61 +292,96 @@ function generateRoadTiles() {
       rect(ctx, 0, i, T, 1, PALETTE.PURE_WHITE); // top highlight
       rect(ctx, 0, i + 2, T, 1, darken(PALETTE.ZEBRA_WHITE, 0.08)); // bottom shadow
     }
+    addFrame("zebra_h", c, T, T);
+  }
+
+  // Zebra tile: vertical bars (N-S bars, stacked horizontally)
+  // Used for crossings where pedestrians walk E-W (north & south sides)
+  // Bars are PARALLEL to the NS road = PERPENDICULAR to the walking direction
+  // 3px wide bars, 2px gap = 5px period
+  {
+    const [c, ctx] = createPixelCanvas(T, T);
+    rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
+    for (let i = 0; i < T; i += 5) {
+      rect(ctx, i, 0, 3, T, PALETTE.ZEBRA_WHITE);
+      rect(ctx, i, 0, 1, T, PALETTE.PURE_WHITE); // left highlight
+      rect(ctx, i + 2, 0, 1, T, darken(PALETTE.ZEBRA_WHITE, 0.08)); // right shadow
+    }
     addFrame("zebra_v", c, T, T);
   }
 
-  // Zebra crossing diagonal (NW-SE)
+  // Diagonal corridor crossing SW↔NE (80×80, transparent background overlay)
+  // This is the single famous Shibuya diagonal — a rectangular corridor at 45°
+  // containing NW-SE bars (perpendicular to the SW-NE walking direction).
+  // Placed on top of the intersection tiles so worn asphalt shows through gaps.
   {
-    const [c, ctx] = createPixelCanvas(T, T);
-    rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
-    for (let i = -T; i < T * 2; i += 5) {
-      for (let d = 0; d < 2; d++) {
-        for (let t = 0; t < T; t++) {
-          const x = t, y = i + d + t;
-          if (x >= 0 && x < T && y >= 0 && y < T) {
-            px(ctx, x, y, d === 0 ? PALETTE.PURE_WHITE : PALETTE.ZEBRA_WHITE);
-          }
+    const SIZE = 80; // matches intersection size (ROAD_W × ROAD_W)
+    const [c, ctx] = createPixelCanvas(SIZE, SIZE);
+    // Canvas starts fully transparent — worn asphalt intersection tiles show through
+
+    const CENTER_SUM = SIZE - 1; // x + y = 79 along the corridor center line (SW to NE)
+    const HALF_W = 14; // |x+y - 79| ≤ 14 → ~20px perpendicular width
+
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        // Corridor mask: perpendicular distance from center line
+        const v = x + y - CENTER_SUM;
+        if (Math.abs(v) > HALF_W) continue; // outside corridor
+
+        // Bar pattern: NW-SE bars (direction (1,1), constant x-y along each bar)
+        // Bars stack along the walking direction (x-y increases from SW to NE)
+        // Period 5: 3 bar pixels + 2 gap pixels
+        const u = ((x - y) % 5 + 500) % 5; // positive modulo
+        if (u >= 3) continue; // gap — transparent, shows asphalt below
+
+        // Draw bar pixel with highlight/shadow
+        if (u === 0) {
+          px(ctx, x, y, PALETTE.PURE_WHITE); // highlight edge (NW side of bar)
+        } else if (u === 2) {
+          px(ctx, x, y, darken(PALETTE.ZEBRA_WHITE, 0.08)); // shadow edge (SE side)
+        } else {
+          px(ctx, x, y, PALETTE.ZEBRA_WHITE); // bar body
         }
       }
     }
-    addFrame("zebra_diag_nwse", c, T, T);
+    addFrame("zebra_diag_corridor", c, SIZE, SIZE);
   }
 
-  // Zebra crossing diagonal (NE-SW)
+  // Stop line horizontal (solid white line across full tile, near bottom)
+  // 2px thick solid line
   {
     const [c, ctx] = createPixelCanvas(T, T);
     rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
-    for (let i = -T; i < T * 2; i += 5) {
-      for (let d = 0; d < 2; d++) {
-        for (let t = 0; t < T; t++) {
-          const x = t, y = i + d - t + T;
-          if (x >= 0 && x < T && y >= 0 && y < T) {
-            px(ctx, x, y, d === 0 ? PALETTE.PURE_WHITE : PALETTE.ZEBRA_WHITE);
-          }
-        }
-      }
-    }
-    addFrame("zebra_diag_nesw", c, T, T);
+    rect(ctx, 0, T - 2, T, 2, PALETTE.ZEBRA_WHITE);
+    rect(ctx, 0, T - 2, T, 1, PALETTE.PURE_WHITE); // highlight
+    addFrame("stop_line_h_bottom", c, T, T);
   }
 
-  // Stop line horizontal
+  // Stop line horizontal (near top — for southbound)
   {
     const [c, ctx] = createPixelCanvas(T, T);
     rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
-    rect(ctx, 0, 8, T, 4, PALETTE.ZEBRA_WHITE);
-    rect(ctx, 0, 8, T, 1, PALETTE.PURE_WHITE);
-    rect(ctx, 0, 11, T, 1, darken(PALETTE.ZEBRA_WHITE, 0.08));
-    addFrame("stop_line_h", c, T, T);
+    rect(ctx, 0, 0, T, 2, PALETTE.ZEBRA_WHITE);
+    rect(ctx, 0, 0, T, 1, PALETTE.PURE_WHITE);
+    addFrame("stop_line_h_top", c, T, T);
   }
 
-  // Stop line vertical
+  // Stop line vertical (near right edge — for westbound)
   {
     const [c, ctx] = createPixelCanvas(T, T);
     rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
-    rect(ctx, 8, 0, 4, T, PALETTE.ZEBRA_WHITE);
-    rect(ctx, 8, 0, 1, T, PALETTE.PURE_WHITE);
-    rect(ctx, 11, 0, 1, T, darken(PALETTE.ZEBRA_WHITE, 0.08));
-    addFrame("stop_line_v", c, T, T);
+    rect(ctx, T - 2, 0, 2, T, PALETTE.ZEBRA_WHITE);
+    rect(ctx, T - 2, 0, 1, T, PALETTE.PURE_WHITE);
+    addFrame("stop_line_v_right", c, T, T);
+  }
+
+  // Stop line vertical (near left edge — for eastbound)
+  {
+    const [c, ctx] = createPixelCanvas(T, T);
+    rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
+    rect(ctx, 0, 0, 2, T, PALETTE.ZEBRA_WHITE);
+    rect(ctx, 0, 0, 1, T, PALETTE.PURE_WHITE);
+    addFrame("stop_line_v_left", c, T, T);
   }
 
   // Sidewalk — tile grid with subtle paving lines
@@ -377,16 +403,17 @@ function generateRoadTiles() {
     addFrame("sidewalk", c, T, T);
   }
 
-  // Intersection center — worn asphalt
+  // Intersection center — worn asphalt (lighter from heavy pedestrian traffic)
   {
     const [c, ctx] = createPixelCanvas(T, T);
-    rect(ctx, 0, 0, T, T, PALETTE.ROAD_MID);
-    // Slightly more lighter pixels (worn center)
+    const wornBase = lighten(PALETTE.ROAD_MID, 0.06);
+    rect(ctx, 0, 0, T, T, wornBase);
     for (let y = 0; y < T; y++) {
       for (let x = 0; x < T; x++) {
         const r = Math.random();
-        if (r < 0.04) px(ctx, x, y, lighten(PALETTE.ROAD_MID, 0.12));
-        else if (r < 0.06) px(ctx, x, y, PALETTE.ROAD_DARK);
+        if (r < 0.06) px(ctx, x, y, lighten(wornBase, 0.1));
+        else if (r < 0.10) px(ctx, x, y, PALETTE.ROAD_MID);
+        else if (r < 0.12) px(ctx, x, y, PALETTE.ROAD_DARK);
       }
     }
     addFrame("intersection", c, T, T);
@@ -892,233 +919,487 @@ function generateTrafficLights() {
 }
 
 
-// ---- Buildings (¾ view: ~40% roof / ~60% front, full pixel art) ----
+// ---- Buildings: Template System ----
+
+interface BuildingConfig {
+  id: string;
+  width: 24 | 36 | 48;
+  floors: number;        // 1-4 (0 for subway special)
+  heightOverride?: number;
+  wallColor: string;
+  roofColor: string;
+  awningColor: string;
+  groundFloor: {
+    type: 'shop' | 'entrance' | 'convenience' | 'restaurant' | 'subway';
+    doorPosition: 'center' | 'left' | 'right';
+    doorIsGlass: boolean;
+    hasVendingMachine: boolean;
+  };
+  upperFloorsOverride?: {
+    screenColor: string;
+    screenGlowColor: string;
+    fromFloor: number;
+    toFloor: number;
+  };
+  decorateGround?: (ctx: CanvasRenderingContext2D, gfY: number, W: number, isNight: boolean) => void;
+}
+
+// ── 3×5 Pixel Font Map ──
+const PIXEL_FONT: Record<string, number[]> = {
+  'A': [0b010, 0b101, 0b111, 0b101, 0b101],
+  'B': [0b110, 0b101, 0b110, 0b101, 0b110],
+  'C': [0b011, 0b100, 0b100, 0b100, 0b011],
+  'D': [0b110, 0b101, 0b101, 0b101, 0b110],
+  'E': [0b111, 0b100, 0b110, 0b100, 0b111],
+  'F': [0b111, 0b100, 0b110, 0b100, 0b100],
+  'G': [0b011, 0b100, 0b101, 0b101, 0b011],
+  'H': [0b101, 0b101, 0b111, 0b101, 0b101],
+  'I': [0b111, 0b010, 0b010, 0b010, 0b111],
+  'J': [0b001, 0b001, 0b001, 0b101, 0b010],
+  'K': [0b101, 0b101, 0b110, 0b101, 0b101],
+  'L': [0b100, 0b100, 0b100, 0b100, 0b111],
+  'M': [0b101, 0b111, 0b111, 0b101, 0b101],
+  'N': [0b101, 0b111, 0b111, 0b111, 0b101],
+  'O': [0b010, 0b101, 0b101, 0b101, 0b010],
+  'P': [0b110, 0b101, 0b110, 0b100, 0b100],
+  'Q': [0b010, 0b101, 0b101, 0b110, 0b011],
+  'R': [0b110, 0b101, 0b110, 0b101, 0b101],
+  'S': [0b011, 0b100, 0b010, 0b001, 0b110],
+  'T': [0b111, 0b010, 0b010, 0b010, 0b010],
+  'U': [0b101, 0b101, 0b101, 0b101, 0b010],
+  'V': [0b101, 0b101, 0b101, 0b010, 0b010],
+  'W': [0b101, 0b101, 0b111, 0b111, 0b101],
+  'X': [0b101, 0b101, 0b010, 0b101, 0b101],
+  'Y': [0b101, 0b101, 0b010, 0b010, 0b010],
+  'Z': [0b111, 0b001, 0b010, 0b100, 0b111],
+  '0': [0b010, 0b101, 0b101, 0b101, 0b010],
+  '1': [0b010, 0b110, 0b010, 0b010, 0b111],
+  '2': [0b110, 0b001, 0b010, 0b100, 0b111],
+  '3': [0b110, 0b001, 0b010, 0b001, 0b110],
+  '4': [0b101, 0b101, 0b111, 0b001, 0b001],
+  '5': [0b111, 0b100, 0b110, 0b001, 0b110],
+  '6': [0b011, 0b100, 0b110, 0b101, 0b010],
+  '7': [0b111, 0b001, 0b010, 0b010, 0b010],
+  '8': [0b010, 0b101, 0b010, 0b101, 0b010],
+  '9': [0b010, 0b101, 0b011, 0b001, 0b110],
+  ' ': [0b000, 0b000, 0b000, 0b000, 0b000],
+};
+
+function drawPixelText(ctx: CanvasRenderingContext2D, x: number, y: number, text: string, color: string) {
+  let cx = x;
+  for (const ch of text.toUpperCase()) {
+    const glyph = PIXEL_FONT[ch];
+    if (!glyph) { cx += 4; continue; }
+    for (let row = 0; row < 5; row++) {
+      const bits = glyph[row];
+      if (bits & 0b100) px(ctx, cx, y + row, color);
+      if (bits & 0b010) px(ctx, cx + 1, y + row, color);
+      if (bits & 0b001) px(ctx, cx + 2, y + row, color);
+    }
+    cx += 4; // 3px char + 1px spacing
+  }
+}
+
+function pixelTextWidth(text: string): number {
+  return text.length * 4 - 1; // 3px per char + 1px spacing, minus trailing
+}
+
+// ── Template Sub-functions ──
+
+function drawTemplateRoof(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, roofColor: string) {
+  rect(ctx, x, y, w, 8, roofColor);
+  rect(ctx, x, y, w, 1, darken(roofColor, 0.3));
+  // Left highlight
+  rect(ctx, x, y, 1, 8, lighten(roofColor, 0.15));
+  // Right shadow
+  rect(ctx, x + w - 1, y, 1, 8, darken(roofColor, 0.15));
+}
+
+function drawTemplateFloor(ctx: CanvasRenderingContext2D, floorY: number, w: number, wallColor: string, isNight: boolean) {
+  // Wall fill
+  rect(ctx, 0, floorY, w, 12, wallColor);
+  // Left highlight
+  rect(ctx, 0, floorY, 1, 12, lighten(wallColor, 0.15));
+  // Right shadow
+  rect(ctx, w - 1, floorY, 1, 12, darken(wallColor, 0.15));
+  // 1px floor separator at bottom
+  rect(ctx, 0, floorY + 11, w, 1, darken(wallColor, 0.1));
+
+  // 3×3 windows, uniformly spaced
+  const glassColor = isNight ? PALETTE.WINDOW_GLOW : PALETTE.SKY_BLUE;
+  const glassHi = isNight ? PALETTE.PURE_WHITE : PALETTE.CYAN;
+  const winY = floorY + 5; // vertically centered in 12px
+  const margin = w === 24 ? 3 : w === 36 ? 4 : 5;
+  for (let wx = margin; wx + 3 <= w - margin; wx += 7) {
+    // Window frame recess
+    rect(ctx, wx, winY, 3, 3, darken(wallColor, 0.2));
+    // Glass
+    rect(ctx, wx, winY, 3, 3, glassColor);
+    // Highlight dot top-right
+    px(ctx, wx + 2, winY, glassHi);
+  }
+}
+
+function drawTemplateGroundFloor(ctx: CanvasRenderingContext2D, gfY: number, w: number, config: BuildingConfig, isNight: boolean) {
+  // Top 3px: awning strip
+  rect(ctx, 0, gfY, w, 3, config.awningColor);
+  rect(ctx, 0, gfY, w, 1, lighten(config.awningColor, 0.2));
+  rect(ctx, 0, gfY + 2, w, 1, darken(config.awningColor, 0.2));
+
+  // Middle 6px: glass storefront default
+  const glass = isNight ? PALETTE.WINDOW_GLOW : PALETTE.SKY_BLUE;
+  rect(ctx, 1, gfY + 3, w - 2, 6, glass);
+  // Diagonal highlight on glass
+  const hi = isNight ? PALETTE.PURE_WHITE : PALETTE.CYAN;
+  for (let i = 0; i < 4; i++) {
+    const hx = 1 + Math.floor(i * (w - 3) / 3);
+    px(ctx, hx, gfY + 3 + Math.min(i, 5), hi);
+  }
+
+  // Bottom 3px: dark base strip
+  rect(ctx, 0, gfY + 9, w, 3, darken(config.wallColor, 0.4));
+  rect(ctx, 0, gfY + 9, w, 1, darken(config.wallColor, 0.3));
+
+  // Door
+  const doorW = 4;
+  const doorH = 6;
+  const doorY = gfY + 3;
+  let doorX: number;
+  if (config.groundFloor.doorPosition === 'left') doorX = 2;
+  else if (config.groundFloor.doorPosition === 'right') doorX = w - doorW - 2;
+  else doorX = Math.floor((w - doorW) / 2);
+
+  if (config.groundFloor.doorIsGlass) {
+    rect(ctx, doorX, doorY, doorW, doorH, glass);
+    px(ctx, doorX + doorW - 1, doorY, hi);
+    // Door frame
+    rect(ctx, doorX, doorY, 1, doorH, darken(config.wallColor, 0.3));
+    rect(ctx, doorX + doorW - 1, doorY, 1, doorH, darken(config.wallColor, 0.3));
+  } else {
+    rect(ctx, doorX, doorY, doorW, doorH, PALETTE.CHARCOAL);
+    rect(ctx, doorX, doorY, doorW, 1, lighten(PALETTE.CHARCOAL, 0.15));
+  }
+
+  // Vending machine
+  if (config.groundFloor.hasVendingMachine) {
+    const vmX = config.groundFloor.doorPosition === 'right' ? 1 : w - 5;
+    drawVendingMachine(ctx, vmX, gfY + 3);
+  }
+}
+
+function drawVideoScreenSegment(ctx: CanvasRenderingContext2D, y: number, w: number, h: number,
+  override: NonNullable<BuildingConfig['upperFloorsOverride']>, isNight: boolean) {
+  const screenColor = isNight ? override.screenGlowColor : override.screenColor;
+  rect(ctx, 1, y, w - 2, h, screenColor);
+  // 1px inset bezels
+  rect(ctx, 1, y, w - 2, 1, darken(screenColor, 0.3));
+  rect(ctx, 1, y, 1, h, darken(screenColor, 0.3));
+  rect(ctx, w - 2, y, 1, h, lighten(screenColor, 0.1));
+  rect(ctx, 1, y + h - 1, w - 2, 1, lighten(screenColor, 0.1));
+  // Horizontal scanlines every 3px
+  for (let sy = y + 2; sy < y + h - 1; sy += 3) {
+    ctx.globalAlpha = 0.08;
+    rect(ctx, 2, sy, w - 4, 1, PALETTE.DARK_NAVY);
+    ctx.globalAlpha = 1.0;
+  }
+  // Night: highlight dots top-left
+  if (isNight) {
+    px(ctx, 2, y + 1, PALETTE.PURE_WHITE);
+    px(ctx, 3, y + 1, PALETTE.PURE_WHITE);
+  }
+}
+
+// ── Core Orchestrator ──
+
+function drawBuildingFromTemplate(config: BuildingConfig, isNight: boolean) {
+  const W = config.width;
+  const H = config.heightOverride ?? (8 + 12 * config.floors);
+  const [c, ctx] = createPixelCanvas(W, H);
+
+  // 1. Drop shadow
+  drawShadow(ctx, 0, 0, W, H, 2, 2, 0.2);
+
+  if (config.floors === 0) {
+    // Special case: subway (no roof, no upper floors — just ground floor)
+    const gfY = 0;
+    // Dark fill for whole thing
+    rect(ctx, 0, 0, W, H, config.wallColor);
+    // Awning strip at top
+    rect(ctx, 0, 0, W, 3, config.awningColor);
+    rect(ctx, 0, 0, W, 1, lighten(config.awningColor, 0.2));
+    // Dark stair opening
+    rect(ctx, 3, 4, W - 6, H - 6, PALETTE.DARK_NAVY);
+    rect(ctx, 3, 4, W - 6, 1, darken(PALETTE.DARK_NAVY, 0.2));
+    // Railings
+    rect(ctx, 2, 4, 1, H - 6, PALETTE.COOL_GREY);
+    rect(ctx, W - 3, 4, 1, H - 6, PALETTE.COOL_GREY);
+    // Per-building decoration
+    if (config.decorateGround) config.decorateGround(ctx, 0, W, isNight);
+    const name = isNight ? `bldg_${config.id}_night` : `bldg_${config.id}`;
+    addFrame(name, c, W, H);
+    return;
+  }
+
+  // 2. Roof cap (8px)
+  drawTemplateRoof(ctx, 0, 0, W, config.roofColor);
+
+  // 3. Upper floors (12px each, top-down)
+  for (let f = config.floors; f >= 2; f--) {
+    const floorY = 8 + (config.floors - f) * 12;
+    if (config.upperFloorsOverride &&
+        f >= config.upperFloorsOverride.fromFloor &&
+        f <= config.upperFloorsOverride.toFloor) {
+      drawVideoScreenSegment(ctx, floorY, W, 12, config.upperFloorsOverride, isNight);
+    } else {
+      drawTemplateFloor(ctx, floorY, W, config.wallColor, isNight);
+    }
+  }
+
+  // 4. Ground floor (12px)
+  const gfY = H - 12;
+  drawTemplateGroundFloor(ctx, gfY, W, config, isNight);
+
+  // 5. Per-building decorateGround callback
+  if (config.decorateGround) config.decorateGround(ctx, gfY, W, isNight);
+
+  const name = isNight ? `bldg_${config.id}_night` : `bldg_${config.id}`;
+  addFrame(name, c, W, H);
+}
+
+// ── 12 Building Configs ──
+
+const BUILDING_CONFIGS: BuildingConfig[] = [
+  // 1. 109 — Pink awning + "109" text
+  {
+    id: '109', width: 48, floors: 4,
+    wallColor: PALETTE.BLDG_109_MAIN,
+    roofColor: darken(PALETTE.BLDG_109_MAIN, 0.2),
+    awningColor: PALETTE.BLDG_109_DARK,
+    groundFloor: { type: 'entrance', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // "109" sign panel on awning
+      const tw = pixelTextWidth("109");
+      const tx = Math.floor((W - tw) / 2);
+      rect(ctx, tx - 1, gfY, tw + 2, 3, PALETTE.BLDG_109_DARK);
+      drawPixelText(ctx, tx, gfY - 7, "109", PALETTE.NEAR_WHITE);
+    },
+  },
+  // 2. Starbucks — Green awning + circle logo + merged windows
+  {
+    id: 'starbucks', width: 36, floors: 2,
+    wallColor: PALETTE.SBUX_WALL,
+    roofColor: darken(PALETTE.SBUX_GREEN, 0.3),
+    awningColor: PALETTE.SBUX_GREEN,
+    groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // "SBUX" on awning
+      drawPixelText(ctx, 6, gfY + 1, "SBUX", PALETTE.NEAR_WHITE);
+      // Green circle logo on glass
+      rect(ctx, 14, gfY + 4, 4, 4, PALETTE.FOREST_GREEN);
+      rect(ctx, 15, gfY + 5, 2, 2, PALETTE.NEAR_WHITE);
+    },
+  },
+  // 3. QFront — Video screen floors 3-4, "TSUTAYA" sign
+  {
+    id: 'qfront', width: 48, floors: 4,
+    wallColor: PALETTE.QFRONT_WALL,
+    roofColor: darken(PALETTE.QFRONT_WALL, 0.2),
+    awningColor: darken(PALETTE.QFRONT_WALL, 0.15),
+    groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    upperFloorsOverride: {
+      screenColor: PALETTE.QFRONT_SCREEN,
+      screenGlowColor: PALETTE.QFRONT_GLOW,
+      fromFloor: 3, toFloor: 4,
+    },
+    decorateGround(ctx, gfY, W, isNight) {
+      // "TSUTAYA" sign panel between screen and ground floor
+      const tw = pixelTextWidth("TSUTAYA");
+      const tx = Math.floor((W - tw) / 2);
+      rect(ctx, 2, gfY - 7, W - 4, 7, darken(PALETTE.QFRONT_WALL, 0.15));
+      drawPixelText(ctx, tx, gfY - 6, "TSUTAYA", isNight ? PALETTE.WINDOW_GLOW : PALETTE.NEAR_WHITE);
+    },
+  },
+  // 4. Station — Dark awning + "JR" mark + gate bars + wide entrance
+  {
+    id: 'station', width: 48, floors: 1,
+    wallColor: PALETTE.STATION_WALL,
+    roofColor: PALETTE.STATION_ROOF,
+    awningColor: darken(PALETTE.STATION_WALL, 0.3),
+    groundFloor: { type: 'entrance', doorPosition: 'center', doorIsGlass: false, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // JR green square on awning
+      rect(ctx, 2, gfY, 4, 3, PALETTE.FOREST_GREEN);
+      drawPixelText(ctx, 7, gfY + 1, "JR", PALETTE.NEAR_WHITE);
+      // Wide entrance with gate bars
+      rect(ctx, 6, gfY + 3, W - 12, 6, darken(PALETTE.STATION_WALL, 0.3));
+      // Gate bar pattern
+      for (let gx = 8; gx < W - 8; gx += 4) {
+        rect(ctx, gx, gfY + 3, 1, 6, PALETTE.COOL_GREY);
+      }
+    },
+  },
+  // 5. Lawson — Blue awning + "L" + vending machine
+  {
+    id: 'lawson', width: 24, floors: 1,
+    wallColor: PALETTE.NEAR_WHITE,
+    roofColor: darken(PALETTE.NEAR_WHITE, 0.15),
+    awningColor: PALETTE.BRIGHT_BLUE,
+    groundFloor: { type: 'convenience', doorPosition: 'left', doorIsGlass: true, hasVendingMachine: true },
+    decorateGround(ctx, gfY, W, isNight) {
+      drawPixelText(ctx, 3, gfY + 1, "LAWSON", PALETTE.NEAR_WHITE);
+    },
+  },
+  // 6. FamilyMart — Green/white/blue triple-stripe awning + "FM"
+  {
+    id: 'familymart', width: 24, floors: 1,
+    wallColor: PALETTE.NEAR_WHITE,
+    roofColor: darken(PALETTE.NEAR_WHITE, 0.15),
+    awningColor: PALETTE.FOREST_GREEN,
+    groundFloor: { type: 'convenience', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // Triple-stripe awning: green / white / blue
+      rect(ctx, 0, gfY, W, 1, PALETTE.FOREST_GREEN);
+      rect(ctx, 0, gfY + 1, W, 1, PALETTE.NEAR_WHITE);
+      rect(ctx, 0, gfY + 2, W, 1, PALETTE.BRIGHT_BLUE);
+      drawPixelText(ctx, 5, gfY + 1, "FM", PALETTE.NEAR_WHITE);
+    },
+  },
+  // 7. 7-Eleven — Orange/green/red stripe + big "7"
+  {
+    id: 'seven_eleven', width: 24, floors: 1,
+    wallColor: PALETTE.NEAR_WHITE,
+    roofColor: darken(PALETTE.NEAR_WHITE, 0.15),
+    awningColor: PALETTE.WARM_ORANGE,
+    groundFloor: { type: 'convenience', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // Orange/green/red stripe awning
+      rect(ctx, 0, gfY, W, 1, PALETTE.WARM_ORANGE);
+      rect(ctx, 0, gfY + 1, W, 1, PALETTE.FOREST_GREEN);
+      rect(ctx, 0, gfY + 2, W, 1, PALETTE.CRIMSON);
+      // Big "7" on shopfront glass — 4px tall bold
+      const sevenGlyph = [0b1111, 0b0001, 0b0010, 0b0100];
+      const sevenX = Math.floor((W - 4) / 2);
+      const color = isNight ? PALETTE.WINDOW_GLOW : PALETTE.WARM_ORANGE;
+      for (let row = 0; row < 4; row++) {
+        const bits = sevenGlyph[row];
+        for (let bit = 0; bit < 4; bit++) {
+          if (bits & (1 << (3 - bit))) px(ctx, sevenX + bit, gfY + 4 + row, color);
+        }
+      }
+    },
+  },
+  // 8. Ramen — Red awning + noren curtain bars
+  {
+    id: 'ramen', width: 24, floors: 1,
+    wallColor: PALETTE.STORE_WALL_A,
+    roofColor: darken(PALETTE.STORE_WALL_A, 0.15),
+    awningColor: PALETTE.CRIMSON,
+    groundFloor: { type: 'restaurant', doorPosition: 'center', doorIsGlass: false, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // Two stylized marks on awning suggesting "拉麺"
+      px(ctx, 4, gfY + 1, PALETTE.NEAR_WHITE);
+      px(ctx, 5, gfY + 1, PALETTE.NEAR_WHITE);
+      px(ctx, 7, gfY + 1, PALETTE.NEAR_WHITE);
+      px(ctx, 8, gfY + 1, PALETTE.NEAR_WHITE);
+      // Noren curtain bars
+      for (let nx = 3; nx < W - 3; nx += 3) {
+        rect(ctx, nx, gfY + 3, 2, 4, PALETTE.CRIMSON);
+        rect(ctx, nx, gfY + 3, 2, 1, lighten(PALETTE.CRIMSON, 0.2));
+      }
+    },
+  },
+  // 9. Office A — Warm grey wall, dark awning, plain glass
+  {
+    id: 'office_a', width: 36, floors: 3,
+    wallColor: PALETTE.STORE_WALL_A,
+    roofColor: darken(PALETTE.STORE_WALL_A, 0.2),
+    awningColor: PALETTE.CHARCOAL,
+    groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      drawPixelText(ctx, 6, gfY + 1, "BLDG", PALETTE.COOL_GREY);
+    },
+  },
+  // 10. Office B — Cool grey wall, blue awning, plain glass
+  {
+    id: 'office_b', width: 36, floors: 3,
+    wallColor: PALETTE.STORE_WALL_B,
+    roofColor: darken(PALETTE.STORE_WALL_B, 0.2),
+    awningColor: PALETTE.BRIGHT_BLUE,
+    groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      drawPixelText(ctx, 8, gfY + 1, "OFC", PALETTE.COOL_GREY);
+    },
+  },
+  // 11. Pachinko — Golden wall, colorful signage rectangles
+  {
+    id: 'pachinko', width: 36, floors: 2,
+    wallColor: PALETTE.GOLDEN,
+    roofColor: darken(PALETTE.GOLDEN, 0.2),
+    awningColor: PALETTE.WARM_ORANGE,
+    groundFloor: { type: 'shop', doorPosition: 'center', doorIsGlass: true, hasVendingMachine: false },
+    decorateGround(ctx, gfY, W, isNight) {
+      // "SLOT" in neon-style on shopfront
+      const color = isNight ? PALETTE.SIGNAL_YELLOW : PALETTE.GOLDEN;
+      drawPixelText(ctx, 6, gfY + 4, "SLOT", color);
+      // Colorful 2×2 signage blocks above awning
+      const signColors = [PALETTE.CRIMSON, PALETTE.NEON_CYAN, PALETTE.SIGNAL_YELLOW, PALETTE.FOREST_GREEN];
+      for (let i = 0; i < signColors.length; i++) {
+        rect(ctx, 4 + i * 8, gfY - 4, 6, 3, signColors[i]);
+      }
+    },
+  },
+  // 12. Subway — Metro "M" logo + dark stair opening
+  {
+    id: 'subway', width: 24, floors: 0, heightOverride: 14,
+    wallColor: PALETTE.CHARCOAL,
+    roofColor: PALETTE.CHARCOAL,
+    awningColor: PALETTE.SLATE,
+    groundFloor: { type: 'subway', doorPosition: 'center', doorIsGlass: false, hasVendingMachine: false },
+    decorateGround(ctx, _gfY, W, isNight) {
+      // Metro "M" logo: blue circle with white M
+      const mx = Math.floor((W - 5) / 2);
+      rect(ctx, mx, 0, 5, 3, PALETTE.BRIGHT_BLUE);
+      // "M" inside
+      px(ctx, mx + 1, 1, PALETTE.NEAR_WHITE);
+      px(ctx, mx + 2, 2, PALETTE.NEAR_WHITE);
+      px(ctx, mx + 3, 1, PALETTE.NEAR_WHITE);
+      px(ctx, mx + 1, 2, PALETTE.NEAR_WHITE);
+      px(ctx, mx + 3, 2, PALETTE.NEAR_WHITE);
+    },
+  },
+];
+
+// ── Vertical Sign Sprites ──
+
+function generateVerticalSigns() {
+  for (const isNight of [false, true]) {
+    const W = 2, H = 12;
+    const [c, ctx] = createPixelCanvas(W, H);
+    const base = isNight ? PALETTE.CRIMSON : PALETTE.WARM_ORANGE;
+    rect(ctx, 0, 0, W, H, base);
+    // Highlight left, shadow right
+    rect(ctx, 0, 0, 1, H, lighten(base, 0.2));
+    rect(ctx, W - 1, 0, 1, H, darken(base, 0.2));
+    // Contrasting dots every 3px suggesting kanji
+    const dotColor = isNight ? PALETTE.WINDOW_GLOW : PALETTE.NEAR_WHITE;
+    for (let dy = 1; dy < H - 1; dy += 3) {
+      px(ctx, 0, dy, dotColor);
+      px(ctx, 1, dy + 1, dotColor);
+    }
+    addFrame(isNight ? "bldg_sign_v_night" : "bldg_sign_v", c, W, H);
+  }
+}
+
+// ── Main Buildings Generator ──
 
 function generateBuildings() {
-
-  // ── Shibuya 109 (64×80) — roofH=28, frontH=52 ──
-  function draw109(isNight: boolean) {
-    const W = 64, H = 80;
-    const roofH = 28, frontH = H - roofH;
-    const wallBase = PALETTE.BLDG_109_MAIN;
-    const [c, ctx] = createPixelCanvas(W, H);
-    drawShadow(ctx, 0, 0, W, H);
-
-    // Roof
-    drawRoof(ctx, 0, 0, W, roofH, darken(wallBase, 0.1));
-
-    // Front face wall (3-tone)
-    drawWall(ctx, 0, roofH, W, frontH, wallBase, 8);
-    roofOverhangShadow(ctx, 0, roofH, W);
-    // Cylindrical shading
-    rect(ctx, 0, roofH, 4, frontH, PALETTE.BLDG_109_DARK);
-    rect(ctx, 0, roofH, 1, frontH, darken(PALETTE.BLDG_109_DARK, 0.15));
-    rect(ctx, W - 4, roofH, 4, frontH, PALETTE.BLDG_109_DARK);
-    rect(ctx, W - 1, roofH, 1, frontH, darken(PALETTE.BLDG_109_DARK, 0.3));
-    // Floor lines
-    floorLine(ctx, 4, roofH + 12, W - 8, wallBase);
-    floorLine(ctx, 4, roofH + 22, W - 8, wallBase);
-    // Windows (inset, 3×3 with frame/glass/highlight)
-    for (let wy = roofH + 3; wy + 4 < roofH + 30; wy += 6) {
-      for (let wx = 8; wx + 4 < W - 8; wx += 7) {
-        drawWindow(ctx, wx, wy, 4, 4, wallBase, isNight);
-      }
-    }
-    // "109" sign (3-tone sign panel)
-    rect3(ctx, 12, roofH + 31, 40, 9, PALETTE.BLDG_109_DARK);
-    rect(ctx, 14, roofH + 33, 36, 5, isNight ? PALETTE.WINDOW_GLOW : PALETTE.GOLDEN);
-    px(ctx, 14, roofH + 33, isNight ? PALETTE.PURE_WHITE : lighten(PALETTE.GOLDEN, 0.3));
-    // Ground floor
-    rect3(ctx, 4, H - 14, W - 8, 14, darken(wallBase, 0.2));
-    floorLine(ctx, 4, H - 14, W - 8, wallBase);
-    // Entrance (glass door)
-    drawDoor(ctx, 22, H - 12, 10, 12, true, isNight);
-    drawDoor(ctx, 32, H - 12, 10, 12, true, isNight);
-    // Accent stripe
-    drawAwning(ctx, 4, H - 14, W - 8, 2, PALETTE.BLDG_109_DARK, false);
-    addFrame(isNight ? "bldg_109_night" : "bldg_109", c, W, H);
+  // Generate all 12 buildings × 2 (day/night)
+  for (const config of BUILDING_CONFIGS) {
+    drawBuildingFromTemplate(config, false);
+    drawBuildingFromTemplate(config, true);
   }
-  draw109(false);
-  draw109(true);
-
-  // ── Starbucks (56×48) — roofH=16, frontH=32 ──
-  function drawStarbucks(isNight: boolean) {
-    const W = 56, H = 48;
-    const roofH = 16, frontH = H - roofH;
-    const [c, ctx] = createPixelCanvas(W, H);
-    drawShadow(ctx, 0, 0, W, H);
-
-    // Roof
-    drawRoof(ctx, 0, 0, W, roofH, darken(PALETTE.SBUX_GREEN, 0.3));
-
-    // Front face
-    drawWall(ctx, 0, roofH, W, frontH, PALETTE.SBUX_WALL, 8);
-    roofOverhangShadow(ctx, 0, roofH, W);
-    // Upper floor windows (glass with diagonal highlight)
-    drawGlass(ctx, 4, roofH + 2, 14, 10, isNight);
-    drawGlass(ctx, 22, roofH + 2, 14, 10, isNight);
-    drawGlass(ctx, 40, roofH + 2, 12, 10, isNight);
-    // Green awning with logo (scalloped)
-    drawAwning(ctx, 0, roofH + 13, W, 3, PALETTE.SBUX_GREEN, true);
-    // Logo circle
-    rect(ctx, 24, roofH + 13, 8, 3, PALETTE.FOREST_GREEN);
-    rect(ctx, 26, roofH + 14, 4, 1, PALETTE.NEAR_WHITE);
-    // Ground floor shopfront
-    drawGlass(ctx, 4, roofH + 17, 18, 14, isNight);
-    drawGlass(ctx, 30, roofH + 17, 22, 14, isNight);
-    // Door
-    drawDoor(ctx, 22, H - 12, 8, 12, true, isNight);
-    addFrame(isNight ? "bldg_starbucks_night" : "bldg_starbucks", c, W, H);
-  }
-  drawStarbucks(false);
-  drawStarbucks(true);
-
-  // ── QFront/Tsutaya (56×96) — roofH=22, frontH=74 ──
-  function drawQFront(isNight: boolean) {
-    const W = 56, H = 96;
-    const roofH = 22;
-    const [c, ctx] = createPixelCanvas(W, H);
-    drawShadow(ctx, 0, 0, W, H);
-
-    // Roof
-    drawRoof(ctx, 0, 0, W, roofH, darken(PALETTE.QFRONT_WALL, 0.2));
-    // Antenna
-    rect(ctx, 26, 0, 2, 4, PALETTE.SIGNAL_POST);
-    px(ctx, 26, 0, lighten(PALETTE.SIGNAL_POST, 0.2));
-
-    // Front face
-    drawWall(ctx, 0, roofH, W, H - roofH, PALETTE.QFRONT_WALL, 0);
-    roofOverhangShadow(ctx, 0, roofH, W);
-
-    // MASSIVE VIDEO SCREEN (the hero element)
-    const screenY = roofH + 2;
-    const screenH = 40;
-    const screenColor = isNight ? PALETTE.QFRONT_GLOW : PALETTE.QFRONT_SCREEN;
-    rect(ctx, 3, screenY, W - 6, screenH, screenColor);
-    // Screen edges (inset)
-    rect(ctx, 3, screenY, W - 6, 1, darken(screenColor, 0.3));
-    rect(ctx, 3, screenY, 1, screenH, darken(screenColor, 0.3));
-    rect(ctx, W - 4, screenY, 1, screenH, lighten(screenColor, 0.1));
-    rect(ctx, 3, screenY + screenH - 1, W - 6, 1, lighten(screenColor, 0.1));
-    // Screen scanline texture (subtle)
-    for (let sy = screenY + 2; sy < screenY + screenH - 2; sy += 3) {
-      ctx.globalAlpha = 0.08;
-      rect(ctx, 4, sy, W - 8, 1, PALETTE.DARK_NAVY);
-      ctx.globalAlpha = 1.0;
-    }
-    // Screen highlight glow
-    if (isNight) {
-      px(ctx, 4, screenY + 1, PALETTE.PURE_WHITE);
-      px(ctx, 5, screenY + 1, PALETTE.PURE_WHITE);
-    }
-
-    // "TSUTAYA" signage (3-tone panel)
-    rect3(ctx, 6, roofH + 44, 44, 6, darken(PALETTE.QFRONT_WALL, 0.15));
-    rect(ctx, 8, roofH + 45, 40, 4, isNight ? PALETTE.WINDOW_GLOW : PALETTE.NEAR_WHITE);
-    px(ctx, 8, roofH + 45, isNight ? PALETTE.PURE_WHITE : lighten(PALETTE.NEAR_WHITE, 0.1));
-
-    // Window row
-    floorLine(ctx, 4, roofH + 51, W - 8, PALETTE.QFRONT_WALL);
-    for (let wx = 6; wx + 5 < W - 4; wx += 8) {
-      drawWindow(ctx, wx, roofH + 53, 5, 5, PALETTE.QFRONT_WALL, isNight);
-    }
-
-    // Ground floor
-    floorLine(ctx, 3, H - 16, W - 6, PALETTE.QFRONT_WALL);
-    rect3(ctx, 3, H - 14, W - 6, 14, darken(PALETTE.QFRONT_WALL, 0.15));
-    drawGlass(ctx, 6, H - 12, 18, 10, isNight);
-    drawDoor(ctx, 28, H - 12, 8, 10, true, isNight);
-    // Starbucks corner
-    drawAwning(ctx, 38, H - 14, 14, 2, PALETTE.SBUX_GREEN, false);
-    drawGlass(ctx, 38, H - 12, 14, 10, isNight);
-    addFrame(isNight ? "bldg_qfront_night" : "bldg_qfront", c, W, H);
-  }
-  drawQFront(false);
-  drawQFront(true);
-
-  // ── Station (80×48) — roofH=16, frontH=32 ──
-  function drawStation(isNight: boolean) {
-    const W = 80, H = 48;
-    const roofH = 16;
-    const [c, ctx] = createPixelCanvas(W, H);
-    drawShadow(ctx, 0, 0, W, H);
-
-    // Roof
-    drawRoof(ctx, 0, 0, W, roofH, PALETTE.STATION_ROOF);
-
-    // Front face
-    drawWall(ctx, 0, roofH, W, H - roofH, PALETTE.STATION_WALL, 10);
-    roofOverhangShadow(ctx, 0, roofH, W);
-
-    // Station name sign (3-tone panel)
-    rect3(ctx, 14, roofH + 2, 52, 6, darken(PALETTE.STATION_WALL, 0.2));
-    rect(ctx, 16, roofH + 3, 48, 4, isNight ? PALETTE.WINDOW_GLOW : PALETTE.NEAR_WHITE);
-    px(ctx, 16, roofH + 3, isNight ? PALETTE.PURE_WHITE : lighten(PALETTE.NEAR_WHITE, 0.1));
-
-    // Upper windows
-    floorLine(ctx, 2, roofH + 9, W - 4, PALETTE.STATION_WALL);
-    for (let wx = 4; wx + 5 < W - 4; wx += 8) {
-      drawWindow(ctx, wx, roofH + 11, 5, 5, PALETTE.STATION_WALL, isNight);
-    }
-
-    // Entrance gates
-    floorLine(ctx, 2, H - 16, W - 4, PALETTE.STATION_WALL);
-    for (let gx = 12; gx + 10 < W - 10; gx += 14) {
-      drawGlass(ctx, gx, H - 14, 4, 14, isNight);
-      rect(ctx, gx + 4, H - 14, 2, 14, PALETTE.STATION_WALL);
-      drawGlass(ctx, gx + 6, H - 14, 4, 14, isNight);
-    }
-    // Ticket machines
-    drawVendingMachine(ctx, 4, H - 10);
-    drawVendingMachine(ctx, W - 8, H - 10);
-    addFrame(isNight ? "bldg_station_night" : "bldg_station", c, W, H);
-  }
-  drawStation(false);
-  drawStation(true);
-
-  // ── Generic storefronts (48×40) ×2 — roofH=12, frontH=28 ──
-  for (const [idx, awningColor] of [PALETTE.AWNING_A, PALETTE.AWNING_B].entries()) {
-    const wallColor = idx === 0 ? PALETTE.STORE_WALL_A : PALETTE.STORE_WALL_B;
-    const W = 48, H = 40;
-    const roofH = 12;
-
-    function drawStore(isNight: boolean) {
-      const [c, ctx] = createPixelCanvas(W, H);
-      drawShadow(ctx, 0, 0, W, H);
-
-      // Roof
-      drawRoof(ctx, 0, 0, W, roofH, darken(wallColor, 0.1));
-
-      // Front face
-      drawWall(ctx, 0, roofH, W, H - roofH, wallColor, 8);
-      roofOverhangShadow(ctx, 0, roofH, W);
-
-      // Awning (scalloped for variety)
-      drawAwning(ctx, 0, roofH + 1, W, 4, awningColor, idx === 0);
-      // Logo on awning
-      rect(ctx, 18, roofH + 2, 12, 2, PALETTE.NEAR_WHITE);
-      px(ctx, 18, roofH + 2, PALETTE.PURE_WHITE); // highlight
-
-      // Upper windows
-      drawWindow(ctx, 4, roofH + 7, 5, 5, wallColor, isNight);
-      drawWindow(ctx, 12, roofH + 7, 5, 5, wallColor, isNight);
-      drawWindow(ctx, 31, roofH + 7, 5, 5, wallColor, isNight);
-      drawWindow(ctx, 39, roofH + 7, 5, 5, wallColor, isNight);
-
-      // Ground floor glass storefronts
-      floorLine(ctx, 2, H - 14, W - 4, wallColor);
-      drawGlass(ctx, 4, H - 13, 16, 13, isNight);
-      drawGlass(ctx, 26, H - 13, 14, 13, isNight);
-      // Door
-      drawDoor(ctx, 19, H - 12, 7, 12, true, isNight);
-      // Vending machine
-      drawVendingMachine(ctx, W - 6, H - 10);
-
-      addFrame(isNight ? `bldg_store_${idx}_night` : `bldg_store_${idx}`, c, W, H);
-    }
-    drawStore(false);
-    drawStore(true);
-  }
+  // Generate vertical sign sprites
+  generateVerticalSigns();
 }
 
 
