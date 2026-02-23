@@ -5,7 +5,7 @@ import type { Entity, Direction, PedDirection } from "../entities/Entity";
 import {
   SCENE_W, SCENE_H, nsLaneX, ewLaneY,
   NS_ROAD_LEFT, NS_ROAD_RIGHT, EW_ROAD_TOP, EW_ROAD_BOTTOM,
-  IX_CENTER_X, IX_CENTER_Y, ZEBRA_WIDTH
+  IX_CENTER_X, IX_CENTER_Y, ZEBRA_WIDTH, ZEBRA_WIDTH_N
 } from "../scene/Road";
 import { canPedestriansGo, isPedestrianFlashing } from "./TrafficLight";
 
@@ -172,10 +172,10 @@ function getPedestrianPaths(): CrossingPath[] {
   const offset = () => (Math.random() - 0.5) * 12;
 
   // Gathering points (just outside zebra crossings, on sidewalks)
-  const pedNorth = EW_ROAD_TOP - ZEBRA_WIDTH - 6;   // ~74
-  const pedSouth = EW_ROAD_BOTTOM + ZEBRA_WIDTH + 6; // ~246
-  const pedWest = NS_ROAD_LEFT - ZEBRA_WIDTH - 6;    // ~314
-  const pedEast = NS_ROAD_RIGHT + ZEBRA_WIDTH + 6;   // ~486
+  const pedNorth = EW_ROAD_TOP - ZEBRA_WIDTH_N - 6;  // compact north crossing
+  const pedSouth = EW_ROAD_BOTTOM + ZEBRA_WIDTH + 6;
+  const pedWest = NS_ROAD_LEFT - ZEBRA_WIDTH - 6;
+  const pedEast = NS_ROAD_RIGHT + ZEBRA_WIDTH + 6;
 
   // N-S crossings (west zebra — pedestrians walk through west side)
   paths.push({

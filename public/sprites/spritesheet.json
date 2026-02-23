@@ -1,11 +1,11 @@
 {
   "frames": {
-    "zebra_diag_corridor": {
+    "bldg_qfront_n": {
       "frame": {
         "x": 0,
         "y": 0,
         "w": 80,
-        "h": 80
+        "h": 118
       },
       "rotated": false,
       "trimmed": false,
@@ -13,177 +13,417 @@
         "x": 0,
         "y": 0,
         "w": 80,
-        "h": 80
+        "h": 118
       },
       "sourceSize": {
         "w": 80,
-        "h": 80
+        "h": 118
       }
     },
-    "bldg_109": {
+    "bldg_qfront_n_night": {
       "frame": {
         "x": 81,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 118
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 118
       },
       "sourceSize": {
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 118
       }
     },
-    "bldg_109_night": {
+    "bldg_109_n": {
       "frame": {
-        "x": 130,
+        "x": 162,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 92
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 92
       },
       "sourceSize": {
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 92
       }
     },
-    "bldg_qfront": {
+    "bldg_109_n_night": {
       "frame": {
-        "x": 179,
+        "x": 243,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 92
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 92
       },
       "sourceSize": {
-        "w": 48,
-        "h": 56
+        "w": 80,
+        "h": 92
       }
     },
-    "bldg_qfront_night": {
+    "bldg_office_a_n": {
       "frame": {
-        "x": 228,
+        "x": 324,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 60,
+        "h": 92
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 48,
-        "h": 56
+        "w": 60,
+        "h": 92
       },
       "sourceSize": {
-        "w": 48,
-        "h": 56
+        "w": 60,
+        "h": 92
       }
     },
-    "bldg_office_a": {
+    "bldg_office_a_n_night": {
       "frame": {
-        "x": 277,
+        "x": 385,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       },
       "sourceSize": {
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       }
     },
-    "bldg_office_a_night": {
+    "bldg_office_b_n": {
       "frame": {
-        "x": 314,
+        "x": 446,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       },
       "sourceSize": {
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       }
     },
-    "bldg_office_b": {
+    "bldg_office_b_n_night": {
       "frame": {
-        "x": 351,
+        "x": 507,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       },
       "sourceSize": {
-        "w": 36,
-        "h": 44
+        "w": 60,
+        "h": 92
       }
     },
-    "bldg_office_b_night": {
+    "zebra_diag_corridor": {
       "frame": {
-        "x": 388,
+        "x": 568,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 80,
+        "h": 80
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 44
+        "w": 80,
+        "h": 80
       },
       "sourceSize": {
-        "w": 36,
-        "h": 44
+        "w": 80,
+        "h": 80
+      }
+    },
+    "bldg_starbucks_n": {
+      "frame": {
+        "x": 649,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 64
+      }
+    },
+    "bldg_starbucks_n_night": {
+      "frame": {
+        "x": 710,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 64
+      }
+    },
+    "bldg_pachinko_n": {
+      "frame": {
+        "x": 771,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 64
+      }
+    },
+    "bldg_pachinko_n_night": {
+      "frame": {
+        "x": 832,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 64
+      }
+    },
+    "bldg_qfront_s": {
+      "frame": {
+        "x": 893,
+        "y": 0,
+        "w": 80,
+        "h": 60
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 60
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 60
+      }
+    },
+    "bldg_qfront_s_night": {
+      "frame": {
+        "x": 0,
+        "y": 119,
+        "w": 80,
+        "h": 60
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 60
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 60
+      }
+    },
+    "bldg_109_s": {
+      "frame": {
+        "x": 81,
+        "y": 119,
+        "w": 80,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 46
+      }
+    },
+    "bldg_109_s_night": {
+      "frame": {
+        "x": 162,
+        "y": 119,
+        "w": 80,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 46
+      }
+    },
+    "bldg_office_a_s": {
+      "frame": {
+        "x": 243,
+        "y": 119,
+        "w": 60,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 46
+      }
+    },
+    "bldg_office_a_s_night": {
+      "frame": {
+        "x": 304,
+        "y": 119,
+        "w": 60,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 46
+      }
+    },
+    "bldg_office_b_s": {
+      "frame": {
+        "x": 365,
+        "y": 119,
+        "w": 60,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 46
+      }
+    },
+    "bldg_office_b_s_night": {
+      "frame": {
+        "x": 426,
+        "y": 119,
+        "w": 60,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 46
       }
     },
     "bus_n": {
       "frame": {
-        "x": 425,
-        "y": 0,
+        "x": 487,
+        "y": 119,
         "w": 16,
         "h": 40
       },
@@ -202,8 +442,8 @@
     },
     "bus_s": {
       "frame": {
-        "x": 442,
-        "y": 0,
+        "x": 504,
+        "y": 119,
         "w": 16,
         "h": 40
       },
@@ -220,90 +460,490 @@
         "h": 40
       }
     },
-    "bldg_starbucks": {
+    "bldg_starbucks_s": {
       "frame": {
-        "x": 459,
-        "y": 0,
-        "w": 36,
-        "h": 32
+        "x": 521,
+        "y": 119,
+        "w": 60,
+        "h": 36
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 32
+        "w": 60,
+        "h": 36
       },
       "sourceSize": {
-        "w": 36,
-        "h": 32
+        "w": 60,
+        "h": 36
       }
     },
-    "bldg_starbucks_night": {
+    "bldg_starbucks_s_night": {
       "frame": {
-        "x": 496,
-        "y": 0,
-        "w": 36,
-        "h": 32
+        "x": 582,
+        "y": 119,
+        "w": 60,
+        "h": 36
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 32
+        "w": 60,
+        "h": 36
       },
       "sourceSize": {
-        "w": 36,
-        "h": 32
+        "w": 60,
+        "h": 36
       }
     },
-    "bldg_pachinko": {
+    "bldg_station_n": {
       "frame": {
-        "x": 533,
-        "y": 0,
-        "w": 36,
-        "h": 32
+        "x": 643,
+        "y": 119,
+        "w": 80,
+        "h": 36
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 32
+        "w": 80,
+        "h": 36
       },
       "sourceSize": {
-        "w": 36,
-        "h": 32
+        "w": 80,
+        "h": 36
       }
     },
-    "bldg_pachinko_night": {
+    "bldg_station_n_night": {
       "frame": {
-        "x": 570,
-        "y": 0,
-        "w": 36,
-        "h": 32
+        "x": 724,
+        "y": 119,
+        "w": 80,
+        "h": 36
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 36,
-        "h": 32
+        "w": 80,
+        "h": 36
       },
       "sourceSize": {
-        "w": 36,
-        "h": 32
+        "w": 80,
+        "h": 36
+      }
+    },
+    "bldg_lawson_n": {
+      "frame": {
+        "x": 805,
+        "y": 119,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_lawson_n_night": {
+      "frame": {
+        "x": 846,
+        "y": 119,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_familymart_n": {
+      "frame": {
+        "x": 887,
+        "y": 119,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_familymart_n_night": {
+      "frame": {
+        "x": 928,
+        "y": 119,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_seven_eleven_n": {
+      "frame": {
+        "x": 969,
+        "y": 119,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_seven_eleven_n_night": {
+      "frame": {
+        "x": 0,
+        "y": 180,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_ramen_n": {
+      "frame": {
+        "x": 41,
+        "y": 180,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_ramen_n_night": {
+      "frame": {
+        "x": 82,
+        "y": 180,
+        "w": 40,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 36
+      }
+    },
+    "bldg_pachinko_s": {
+      "frame": {
+        "x": 123,
+        "y": 180,
+        "w": 60,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 36
+      }
+    },
+    "bldg_pachinko_s_night": {
+      "frame": {
+        "x": 184,
+        "y": 180,
+        "w": 60,
+        "h": 36
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 60,
+        "h": 36
+      },
+      "sourceSize": {
+        "w": 60,
+        "h": 36
+      }
+    },
+    "bldg_station_s": {
+      "frame": {
+        "x": 245,
+        "y": 180,
+        "w": 80,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 28
+      }
+    },
+    "bldg_station_s_night": {
+      "frame": {
+        "x": 326,
+        "y": 180,
+        "w": 80,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 28
+      }
+    },
+    "bldg_lawson_s": {
+      "frame": {
+        "x": 407,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_lawson_s_night": {
+      "frame": {
+        "x": 448,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_familymart_s": {
+      "frame": {
+        "x": 489,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_familymart_s_night": {
+      "frame": {
+        "x": 530,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_seven_eleven_s": {
+      "frame": {
+        "x": 571,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_seven_eleven_s_night": {
+      "frame": {
+        "x": 612,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_ramen_s": {
+      "frame": {
+        "x": 653,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
+      }
+    },
+    "bldg_ramen_s_night": {
+      "frame": {
+        "x": 694,
+        "y": 180,
+        "w": 40,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 28
       }
     },
     "sedan_red_n": {
       "frame": {
-        "x": 607,
-        "y": 0,
+        "x": 735,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -322,8 +962,8 @@
     },
     "sedan_red_s": {
       "frame": {
-        "x": 624,
-        "y": 0,
+        "x": 752,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -342,8 +982,8 @@
     },
     "sedan_blue_n": {
       "frame": {
-        "x": 641,
-        "y": 0,
+        "x": 769,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -362,8 +1002,8 @@
     },
     "sedan_blue_s": {
       "frame": {
-        "x": 658,
-        "y": 0,
+        "x": 786,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -382,8 +1022,8 @@
     },
     "sedan_white_n": {
       "frame": {
-        "x": 675,
-        "y": 0,
+        "x": 803,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -402,8 +1042,8 @@
     },
     "sedan_white_s": {
       "frame": {
-        "x": 692,
-        "y": 0,
+        "x": 820,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -422,8 +1062,8 @@
     },
     "sedan_black_n": {
       "frame": {
-        "x": 709,
-        "y": 0,
+        "x": 837,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -442,8 +1082,8 @@
     },
     "sedan_black_s": {
       "frame": {
-        "x": 726,
-        "y": 0,
+        "x": 854,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -462,8 +1102,8 @@
     },
     "taxi_n": {
       "frame": {
-        "x": 743,
-        "y": 0,
+        "x": 871,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -482,8 +1122,8 @@
     },
     "taxi_s": {
       "frame": {
-        "x": 760,
-        "y": 0,
+        "x": 888,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -502,8 +1142,8 @@
     },
     "police_n": {
       "frame": {
-        "x": 777,
-        "y": 0,
+        "x": 905,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -522,8 +1162,8 @@
     },
     "police_s": {
       "frame": {
-        "x": 794,
-        "y": 0,
+        "x": 922,
+        "y": 180,
         "w": 16,
         "h": 24
       },
@@ -540,10 +1180,90 @@
         "h": 24
       }
     },
+    "bldg_subway_n": {
+      "frame": {
+        "x": 939,
+        "y": 180,
+        "w": 40,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 24
+      }
+    },
+    "bldg_subway_n_night": {
+      "frame": {
+        "x": 980,
+        "y": 180,
+        "w": 40,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 24
+      }
+    },
+    "bldg_subway_s": {
+      "frame": {
+        "x": 0,
+        "y": 217,
+        "w": 40,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 24
+      }
+    },
+    "bldg_subway_s_night": {
+      "frame": {
+        "x": 41,
+        "y": 217,
+        "w": 40,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 24
+      }
+    },
     "cyclist_delivery_n_0": {
       "frame": {
-        "x": 811,
-        "y": 0,
+        "x": 82,
+        "y": 217,
         "w": 10,
         "h": 22
       },
@@ -562,8 +1282,8 @@
     },
     "cyclist_delivery_n_1": {
       "frame": {
-        "x": 822,
-        "y": 0,
+        "x": 93,
+        "y": 217,
         "w": 10,
         "h": 22
       },
@@ -582,8 +1302,8 @@
     },
     "cyclist_delivery_s_0": {
       "frame": {
-        "x": 833,
-        "y": 0,
+        "x": 104,
+        "y": 217,
         "w": 10,
         "h": 22
       },
@@ -602,8 +1322,8 @@
     },
     "cyclist_delivery_s_1": {
       "frame": {
-        "x": 844,
-        "y": 0,
+        "x": 115,
+        "y": 217,
         "w": 10,
         "h": 22
       },
@@ -622,8 +1342,8 @@
     },
     "road_asphalt": {
       "frame": {
-        "x": 855,
-        "y": 0,
+        "x": 126,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -642,8 +1362,8 @@
     },
     "road_lane_h": {
       "frame": {
-        "x": 876,
-        "y": 0,
+        "x": 147,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -662,8 +1382,8 @@
     },
     "road_lane_v": {
       "frame": {
-        "x": 897,
-        "y": 0,
+        "x": 168,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -682,8 +1402,8 @@
     },
     "zebra_h": {
       "frame": {
-        "x": 918,
-        "y": 0,
+        "x": 189,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -702,8 +1422,8 @@
     },
     "zebra_v": {
       "frame": {
-        "x": 939,
-        "y": 0,
+        "x": 210,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -722,8 +1442,8 @@
     },
     "stop_line_h_bottom": {
       "frame": {
-        "x": 960,
-        "y": 0,
+        "x": 231,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -742,8 +1462,8 @@
     },
     "stop_line_h_top": {
       "frame": {
-        "x": 981,
-        "y": 0,
+        "x": 252,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -762,8 +1482,8 @@
     },
     "stop_line_v_right": {
       "frame": {
-        "x": 1002,
-        "y": 0,
+        "x": 273,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -782,8 +1502,8 @@
     },
     "stop_line_v_left": {
       "frame": {
-        "x": 0,
-        "y": 81,
+        "x": 294,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -802,8 +1522,8 @@
     },
     "sidewalk": {
       "frame": {
-        "x": 21,
-        "y": 81,
+        "x": 315,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -822,8 +1542,8 @@
     },
     "intersection": {
       "frame": {
-        "x": 42,
-        "y": 81,
+        "x": 336,
+        "y": 217,
         "w": 20,
         "h": 20
       },
@@ -842,8 +1562,8 @@
     },
     "kei_truck_n": {
       "frame": {
-        "x": 63,
-        "y": 81,
+        "x": 357,
+        "y": 217,
         "w": 14,
         "h": 20
       },
@@ -862,8 +1582,8 @@
     },
     "kei_truck_s": {
       "frame": {
-        "x": 78,
-        "y": 81,
+        "x": 372,
+        "y": 217,
         "w": 14,
         "h": 20
       },
@@ -882,8 +1602,8 @@
     },
     "cyclist_commuter_n_0": {
       "frame": {
-        "x": 93,
-        "y": 81,
+        "x": 387,
+        "y": 217,
         "w": 10,
         "h": 20
       },
@@ -902,8 +1622,8 @@
     },
     "cyclist_commuter_n_1": {
       "frame": {
-        "x": 104,
-        "y": 81,
+        "x": 398,
+        "y": 217,
         "w": 10,
         "h": 20
       },
@@ -922,8 +1642,8 @@
     },
     "cyclist_commuter_s_0": {
       "frame": {
-        "x": 115,
-        "y": 81,
+        "x": 409,
+        "y": 217,
         "w": 10,
         "h": 20
       },
@@ -942,8 +1662,8 @@
     },
     "cyclist_commuter_s_1": {
       "frame": {
-        "x": 126,
-        "y": 81,
+        "x": 420,
+        "y": 217,
         "w": 10,
         "h": 20
       },
@@ -957,213 +1677,13 @@
       },
       "sourceSize": {
         "w": 10,
-        "h": 20
-      }
-    },
-    "bldg_station": {
-      "frame": {
-        "x": 137,
-        "y": 81,
-        "w": 48,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 48,
-        "h": 20
-      }
-    },
-    "bldg_station_night": {
-      "frame": {
-        "x": 186,
-        "y": 81,
-        "w": 48,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 48,
-        "h": 20
-      }
-    },
-    "bldg_lawson": {
-      "frame": {
-        "x": 235,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_lawson_night": {
-      "frame": {
-        "x": 260,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_familymart": {
-      "frame": {
-        "x": 285,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_familymart_night": {
-      "frame": {
-        "x": 310,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_seven_eleven": {
-      "frame": {
-        "x": 335,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_seven_eleven_night": {
-      "frame": {
-        "x": 360,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_ramen": {
-      "frame": {
-        "x": 385,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 20
-      }
-    },
-    "bldg_ramen_night": {
-      "frame": {
-        "x": 410,
-        "y": 81,
-        "w": 24,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 24,
         "h": 20
       }
     },
     "sedan_red_e": {
       "frame": {
-        "x": 435,
-        "y": 81,
+        "x": 431,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1182,8 +1702,8 @@
     },
     "sedan_red_w": {
       "frame": {
-        "x": 460,
-        "y": 81,
+        "x": 456,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1202,8 +1722,8 @@
     },
     "sedan_blue_e": {
       "frame": {
-        "x": 485,
-        "y": 81,
+        "x": 481,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1222,8 +1742,8 @@
     },
     "sedan_blue_w": {
       "frame": {
-        "x": 510,
-        "y": 81,
+        "x": 506,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1242,8 +1762,8 @@
     },
     "sedan_white_e": {
       "frame": {
-        "x": 535,
-        "y": 81,
+        "x": 531,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1262,8 +1782,8 @@
     },
     "sedan_white_w": {
       "frame": {
-        "x": 560,
-        "y": 81,
+        "x": 556,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1282,8 +1802,8 @@
     },
     "sedan_black_e": {
       "frame": {
-        "x": 585,
-        "y": 81,
+        "x": 581,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1302,8 +1822,8 @@
     },
     "sedan_black_w": {
       "frame": {
-        "x": 610,
-        "y": 81,
+        "x": 606,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1322,8 +1842,8 @@
     },
     "taxi_e": {
       "frame": {
-        "x": 635,
-        "y": 81,
+        "x": 631,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1342,8 +1862,8 @@
     },
     "taxi_w": {
       "frame": {
-        "x": 660,
-        "y": 81,
+        "x": 656,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1362,8 +1882,8 @@
     },
     "bus_e": {
       "frame": {
-        "x": 685,
-        "y": 81,
+        "x": 681,
+        "y": 217,
         "w": 40,
         "h": 16
       },
@@ -1382,8 +1902,8 @@
     },
     "bus_w": {
       "frame": {
-        "x": 726,
-        "y": 81,
+        "x": 722,
+        "y": 217,
         "w": 40,
         "h": 16
       },
@@ -1402,8 +1922,8 @@
     },
     "police_e": {
       "frame": {
-        "x": 767,
-        "y": 81,
+        "x": 763,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1422,8 +1942,8 @@
     },
     "police_w": {
       "frame": {
-        "x": 792,
-        "y": 81,
+        "x": 788,
+        "y": 217,
         "w": 24,
         "h": 16
       },
@@ -1442,8 +1962,8 @@
     },
     "ped_office_m_n_0": {
       "frame": {
-        "x": 817,
-        "y": 81,
+        "x": 813,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1462,8 +1982,8 @@
     },
     "ped_office_m_n_1": {
       "frame": {
-        "x": 828,
-        "y": 81,
+        "x": 824,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1482,8 +2002,8 @@
     },
     "ped_office_m_n_2": {
       "frame": {
-        "x": 839,
-        "y": 81,
+        "x": 835,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1502,8 +2022,8 @@
     },
     "ped_office_m_n_3": {
       "frame": {
-        "x": 850,
-        "y": 81,
+        "x": 846,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1522,8 +2042,8 @@
     },
     "ped_office_m_ne_0": {
       "frame": {
-        "x": 861,
-        "y": 81,
+        "x": 857,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1542,8 +2062,8 @@
     },
     "ped_office_m_ne_1": {
       "frame": {
-        "x": 872,
-        "y": 81,
+        "x": 868,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1562,8 +2082,8 @@
     },
     "ped_office_m_ne_2": {
       "frame": {
-        "x": 883,
-        "y": 81,
+        "x": 879,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1582,8 +2102,8 @@
     },
     "ped_office_m_ne_3": {
       "frame": {
-        "x": 894,
-        "y": 81,
+        "x": 890,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1602,8 +2122,8 @@
     },
     "ped_office_m_e_0": {
       "frame": {
-        "x": 905,
-        "y": 81,
+        "x": 901,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1622,8 +2142,8 @@
     },
     "ped_office_m_e_1": {
       "frame": {
-        "x": 916,
-        "y": 81,
+        "x": 912,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1642,8 +2162,8 @@
     },
     "ped_office_m_e_2": {
       "frame": {
-        "x": 927,
-        "y": 81,
+        "x": 923,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1662,8 +2182,8 @@
     },
     "ped_office_m_e_3": {
       "frame": {
-        "x": 938,
-        "y": 81,
+        "x": 934,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1682,8 +2202,8 @@
     },
     "ped_office_m_se_0": {
       "frame": {
-        "x": 949,
-        "y": 81,
+        "x": 945,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1702,8 +2222,8 @@
     },
     "ped_office_m_se_1": {
       "frame": {
-        "x": 960,
-        "y": 81,
+        "x": 956,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1722,8 +2242,8 @@
     },
     "ped_office_m_se_2": {
       "frame": {
-        "x": 971,
-        "y": 81,
+        "x": 967,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1742,8 +2262,8 @@
     },
     "ped_office_m_se_3": {
       "frame": {
-        "x": 982,
-        "y": 81,
+        "x": 978,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1762,8 +2282,8 @@
     },
     "ped_office_m_s_0": {
       "frame": {
-        "x": 993,
-        "y": 81,
+        "x": 989,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1782,8 +2302,8 @@
     },
     "ped_office_m_s_1": {
       "frame": {
-        "x": 1004,
-        "y": 81,
+        "x": 1000,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1802,8 +2322,8 @@
     },
     "ped_office_m_s_2": {
       "frame": {
-        "x": 0,
-        "y": 102,
+        "x": 1011,
+        "y": 217,
         "w": 10,
         "h": 16
       },
@@ -1822,8 +2342,8 @@
     },
     "ped_office_m_s_3": {
       "frame": {
-        "x": 11,
-        "y": 102,
+        "x": 0,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1842,8 +2362,8 @@
     },
     "ped_office_m_sw_0": {
       "frame": {
-        "x": 22,
-        "y": 102,
+        "x": 11,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1862,8 +2382,8 @@
     },
     "ped_office_m_sw_1": {
       "frame": {
-        "x": 33,
-        "y": 102,
+        "x": 22,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1882,8 +2402,8 @@
     },
     "ped_office_m_sw_2": {
       "frame": {
-        "x": 44,
-        "y": 102,
+        "x": 33,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1902,8 +2422,8 @@
     },
     "ped_office_m_sw_3": {
       "frame": {
-        "x": 55,
-        "y": 102,
+        "x": 44,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1922,8 +2442,8 @@
     },
     "ped_office_m_w_0": {
       "frame": {
-        "x": 66,
-        "y": 102,
+        "x": 55,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1942,8 +2462,8 @@
     },
     "ped_office_m_w_1": {
       "frame": {
-        "x": 77,
-        "y": 102,
+        "x": 66,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1962,8 +2482,8 @@
     },
     "ped_office_m_w_2": {
       "frame": {
-        "x": 88,
-        "y": 102,
+        "x": 77,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -1982,8 +2502,8 @@
     },
     "ped_office_m_w_3": {
       "frame": {
-        "x": 99,
-        "y": 102,
+        "x": 88,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2002,8 +2522,8 @@
     },
     "ped_office_m_nw_0": {
       "frame": {
-        "x": 110,
-        "y": 102,
+        "x": 99,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2022,8 +2542,8 @@
     },
     "ped_office_m_nw_1": {
       "frame": {
-        "x": 121,
-        "y": 102,
+        "x": 110,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2042,8 +2562,8 @@
     },
     "ped_office_m_nw_2": {
       "frame": {
-        "x": 132,
-        "y": 102,
+        "x": 121,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2062,8 +2582,8 @@
     },
     "ped_office_m_nw_3": {
       "frame": {
-        "x": 143,
-        "y": 102,
+        "x": 132,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2082,8 +2602,8 @@
     },
     "ped_office_f_n_0": {
       "frame": {
-        "x": 154,
-        "y": 102,
+        "x": 143,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2102,8 +2622,8 @@
     },
     "ped_office_f_n_1": {
       "frame": {
-        "x": 165,
-        "y": 102,
+        "x": 154,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2122,8 +2642,8 @@
     },
     "ped_office_f_n_2": {
       "frame": {
-        "x": 176,
-        "y": 102,
+        "x": 165,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2142,8 +2662,8 @@
     },
     "ped_office_f_n_3": {
       "frame": {
-        "x": 187,
-        "y": 102,
+        "x": 176,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2162,8 +2682,8 @@
     },
     "ped_office_f_ne_0": {
       "frame": {
-        "x": 198,
-        "y": 102,
+        "x": 187,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2182,8 +2702,8 @@
     },
     "ped_office_f_ne_1": {
       "frame": {
-        "x": 209,
-        "y": 102,
+        "x": 198,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2202,8 +2722,8 @@
     },
     "ped_office_f_ne_2": {
       "frame": {
-        "x": 220,
-        "y": 102,
+        "x": 209,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2222,8 +2742,8 @@
     },
     "ped_office_f_ne_3": {
       "frame": {
-        "x": 231,
-        "y": 102,
+        "x": 220,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2242,8 +2762,8 @@
     },
     "ped_office_f_e_0": {
       "frame": {
-        "x": 242,
-        "y": 102,
+        "x": 231,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2262,8 +2782,8 @@
     },
     "ped_office_f_e_1": {
       "frame": {
-        "x": 253,
-        "y": 102,
+        "x": 242,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2282,8 +2802,8 @@
     },
     "ped_office_f_e_2": {
       "frame": {
-        "x": 264,
-        "y": 102,
+        "x": 253,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2302,8 +2822,8 @@
     },
     "ped_office_f_e_3": {
       "frame": {
-        "x": 275,
-        "y": 102,
+        "x": 264,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2322,8 +2842,8 @@
     },
     "ped_office_f_se_0": {
       "frame": {
-        "x": 286,
-        "y": 102,
+        "x": 275,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2342,8 +2862,8 @@
     },
     "ped_office_f_se_1": {
       "frame": {
-        "x": 297,
-        "y": 102,
+        "x": 286,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2362,8 +2882,8 @@
     },
     "ped_office_f_se_2": {
       "frame": {
-        "x": 308,
-        "y": 102,
+        "x": 297,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2382,8 +2902,8 @@
     },
     "ped_office_f_se_3": {
       "frame": {
-        "x": 319,
-        "y": 102,
+        "x": 308,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2402,8 +2922,8 @@
     },
     "ped_office_f_s_0": {
       "frame": {
-        "x": 330,
-        "y": 102,
+        "x": 319,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2422,8 +2942,8 @@
     },
     "ped_office_f_s_1": {
       "frame": {
-        "x": 341,
-        "y": 102,
+        "x": 330,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2442,8 +2962,8 @@
     },
     "ped_office_f_s_2": {
       "frame": {
-        "x": 352,
-        "y": 102,
+        "x": 341,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2462,8 +2982,8 @@
     },
     "ped_office_f_s_3": {
       "frame": {
-        "x": 363,
-        "y": 102,
+        "x": 352,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2482,8 +3002,8 @@
     },
     "ped_office_f_sw_0": {
       "frame": {
-        "x": 374,
-        "y": 102,
+        "x": 363,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2502,8 +3022,8 @@
     },
     "ped_office_f_sw_1": {
       "frame": {
-        "x": 385,
-        "y": 102,
+        "x": 374,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2522,8 +3042,8 @@
     },
     "ped_office_f_sw_2": {
       "frame": {
-        "x": 396,
-        "y": 102,
+        "x": 385,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2542,8 +3062,8 @@
     },
     "ped_office_f_sw_3": {
       "frame": {
-        "x": 407,
-        "y": 102,
+        "x": 396,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2562,8 +3082,8 @@
     },
     "ped_office_f_w_0": {
       "frame": {
-        "x": 418,
-        "y": 102,
+        "x": 407,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2582,8 +3102,8 @@
     },
     "ped_office_f_w_1": {
       "frame": {
-        "x": 429,
-        "y": 102,
+        "x": 418,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2602,8 +3122,8 @@
     },
     "ped_office_f_w_2": {
       "frame": {
-        "x": 440,
-        "y": 102,
+        "x": 429,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2622,8 +3142,8 @@
     },
     "ped_office_f_w_3": {
       "frame": {
-        "x": 451,
-        "y": 102,
+        "x": 440,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2642,8 +3162,8 @@
     },
     "ped_office_f_nw_0": {
       "frame": {
-        "x": 462,
-        "y": 102,
+        "x": 451,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2662,8 +3182,8 @@
     },
     "ped_office_f_nw_1": {
       "frame": {
-        "x": 473,
-        "y": 102,
+        "x": 462,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2682,8 +3202,8 @@
     },
     "ped_office_f_nw_2": {
       "frame": {
-        "x": 484,
-        "y": 102,
+        "x": 473,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2702,8 +3222,8 @@
     },
     "ped_office_f_nw_3": {
       "frame": {
-        "x": 495,
-        "y": 102,
+        "x": 484,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2722,8 +3242,8 @@
     },
     "ped_student_n_0": {
       "frame": {
-        "x": 506,
-        "y": 102,
+        "x": 495,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2742,8 +3262,8 @@
     },
     "ped_student_n_1": {
       "frame": {
-        "x": 517,
-        "y": 102,
+        "x": 506,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2762,8 +3282,8 @@
     },
     "ped_student_n_2": {
       "frame": {
-        "x": 528,
-        "y": 102,
+        "x": 517,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2782,8 +3302,8 @@
     },
     "ped_student_n_3": {
       "frame": {
-        "x": 539,
-        "y": 102,
+        "x": 528,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2802,8 +3322,8 @@
     },
     "ped_student_ne_0": {
       "frame": {
-        "x": 550,
-        "y": 102,
+        "x": 539,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2822,8 +3342,8 @@
     },
     "ped_student_ne_1": {
       "frame": {
-        "x": 561,
-        "y": 102,
+        "x": 550,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2842,8 +3362,8 @@
     },
     "ped_student_ne_2": {
       "frame": {
-        "x": 572,
-        "y": 102,
+        "x": 561,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2862,8 +3382,8 @@
     },
     "ped_student_ne_3": {
       "frame": {
-        "x": 583,
-        "y": 102,
+        "x": 572,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2882,8 +3402,8 @@
     },
     "ped_student_e_0": {
       "frame": {
-        "x": 594,
-        "y": 102,
+        "x": 583,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2902,8 +3422,8 @@
     },
     "ped_student_e_1": {
       "frame": {
-        "x": 605,
-        "y": 102,
+        "x": 594,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2922,8 +3442,8 @@
     },
     "ped_student_e_2": {
       "frame": {
-        "x": 616,
-        "y": 102,
+        "x": 605,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2942,8 +3462,8 @@
     },
     "ped_student_e_3": {
       "frame": {
-        "x": 627,
-        "y": 102,
+        "x": 616,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2962,8 +3482,8 @@
     },
     "ped_student_se_0": {
       "frame": {
-        "x": 638,
-        "y": 102,
+        "x": 627,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -2982,8 +3502,8 @@
     },
     "ped_student_se_1": {
       "frame": {
-        "x": 649,
-        "y": 102,
+        "x": 638,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3002,8 +3522,8 @@
     },
     "ped_student_se_2": {
       "frame": {
-        "x": 660,
-        "y": 102,
+        "x": 649,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3022,8 +3542,8 @@
     },
     "ped_student_se_3": {
       "frame": {
-        "x": 671,
-        "y": 102,
+        "x": 660,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3042,8 +3562,8 @@
     },
     "ped_student_s_0": {
       "frame": {
-        "x": 682,
-        "y": 102,
+        "x": 671,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3062,8 +3582,8 @@
     },
     "ped_student_s_1": {
       "frame": {
-        "x": 693,
-        "y": 102,
+        "x": 682,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3082,8 +3602,8 @@
     },
     "ped_student_s_2": {
       "frame": {
-        "x": 704,
-        "y": 102,
+        "x": 693,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3102,8 +3622,8 @@
     },
     "ped_student_s_3": {
       "frame": {
-        "x": 715,
-        "y": 102,
+        "x": 704,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3122,8 +3642,8 @@
     },
     "ped_student_sw_0": {
       "frame": {
-        "x": 726,
-        "y": 102,
+        "x": 715,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3142,8 +3662,8 @@
     },
     "ped_student_sw_1": {
       "frame": {
-        "x": 737,
-        "y": 102,
+        "x": 726,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3162,8 +3682,8 @@
     },
     "ped_student_sw_2": {
       "frame": {
-        "x": 748,
-        "y": 102,
+        "x": 737,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3182,8 +3702,8 @@
     },
     "ped_student_sw_3": {
       "frame": {
-        "x": 759,
-        "y": 102,
+        "x": 748,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3202,8 +3722,8 @@
     },
     "ped_student_w_0": {
       "frame": {
-        "x": 770,
-        "y": 102,
+        "x": 759,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3222,8 +3742,8 @@
     },
     "ped_student_w_1": {
       "frame": {
-        "x": 781,
-        "y": 102,
+        "x": 770,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3242,8 +3762,8 @@
     },
     "ped_student_w_2": {
       "frame": {
-        "x": 792,
-        "y": 102,
+        "x": 781,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3262,8 +3782,8 @@
     },
     "ped_student_w_3": {
       "frame": {
-        "x": 803,
-        "y": 102,
+        "x": 792,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3282,8 +3802,8 @@
     },
     "ped_student_nw_0": {
       "frame": {
-        "x": 814,
-        "y": 102,
+        "x": 803,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3302,8 +3822,8 @@
     },
     "ped_student_nw_1": {
       "frame": {
-        "x": 825,
-        "y": 102,
+        "x": 814,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3322,8 +3842,8 @@
     },
     "ped_student_nw_2": {
       "frame": {
-        "x": 836,
-        "y": 102,
+        "x": 825,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3342,8 +3862,8 @@
     },
     "ped_student_nw_3": {
       "frame": {
-        "x": 847,
-        "y": 102,
+        "x": 836,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3362,8 +3882,8 @@
     },
     "ped_tourist_n_0": {
       "frame": {
-        "x": 858,
-        "y": 102,
+        "x": 847,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3382,8 +3902,8 @@
     },
     "ped_tourist_n_1": {
       "frame": {
-        "x": 869,
-        "y": 102,
+        "x": 858,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3402,8 +3922,8 @@
     },
     "ped_tourist_n_2": {
       "frame": {
-        "x": 880,
-        "y": 102,
+        "x": 869,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3422,8 +3942,8 @@
     },
     "ped_tourist_n_3": {
       "frame": {
-        "x": 891,
-        "y": 102,
+        "x": 880,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3442,8 +3962,8 @@
     },
     "ped_tourist_ne_0": {
       "frame": {
-        "x": 902,
-        "y": 102,
+        "x": 891,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3462,8 +3982,8 @@
     },
     "ped_tourist_ne_1": {
       "frame": {
-        "x": 913,
-        "y": 102,
+        "x": 902,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3482,8 +4002,8 @@
     },
     "ped_tourist_ne_2": {
       "frame": {
-        "x": 924,
-        "y": 102,
+        "x": 913,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3502,8 +4022,8 @@
     },
     "ped_tourist_ne_3": {
       "frame": {
-        "x": 935,
-        "y": 102,
+        "x": 924,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3522,8 +4042,8 @@
     },
     "ped_tourist_e_0": {
       "frame": {
-        "x": 946,
-        "y": 102,
+        "x": 935,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3542,8 +4062,8 @@
     },
     "ped_tourist_e_1": {
       "frame": {
-        "x": 957,
-        "y": 102,
+        "x": 946,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3562,8 +4082,8 @@
     },
     "ped_tourist_e_2": {
       "frame": {
-        "x": 968,
-        "y": 102,
+        "x": 957,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3582,8 +4102,8 @@
     },
     "ped_tourist_e_3": {
       "frame": {
-        "x": 979,
-        "y": 102,
+        "x": 968,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3602,8 +4122,8 @@
     },
     "ped_tourist_se_0": {
       "frame": {
-        "x": 990,
-        "y": 102,
+        "x": 979,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3622,8 +4142,8 @@
     },
     "ped_tourist_se_1": {
       "frame": {
-        "x": 1001,
-        "y": 102,
+        "x": 990,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3642,8 +4162,8 @@
     },
     "ped_tourist_se_2": {
       "frame": {
-        "x": 1012,
-        "y": 102,
+        "x": 1001,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3662,8 +4182,8 @@
     },
     "ped_tourist_se_3": {
       "frame": {
-        "x": 0,
-        "y": 119,
+        "x": 1012,
+        "y": 242,
         "w": 10,
         "h": 16
       },
@@ -3682,8 +4202,8 @@
     },
     "ped_tourist_s_0": {
       "frame": {
-        "x": 11,
-        "y": 119,
+        "x": 0,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3702,8 +4222,8 @@
     },
     "ped_tourist_s_1": {
       "frame": {
-        "x": 22,
-        "y": 119,
+        "x": 11,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3722,8 +4242,8 @@
     },
     "ped_tourist_s_2": {
       "frame": {
-        "x": 33,
-        "y": 119,
+        "x": 22,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3742,8 +4262,8 @@
     },
     "ped_tourist_s_3": {
       "frame": {
-        "x": 44,
-        "y": 119,
+        "x": 33,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3762,8 +4282,8 @@
     },
     "ped_tourist_sw_0": {
       "frame": {
-        "x": 55,
-        "y": 119,
+        "x": 44,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3782,8 +4302,8 @@
     },
     "ped_tourist_sw_1": {
       "frame": {
-        "x": 66,
-        "y": 119,
+        "x": 55,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3802,8 +4322,8 @@
     },
     "ped_tourist_sw_2": {
       "frame": {
-        "x": 77,
-        "y": 119,
+        "x": 66,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3822,8 +4342,8 @@
     },
     "ped_tourist_sw_3": {
       "frame": {
-        "x": 88,
-        "y": 119,
+        "x": 77,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3842,8 +4362,8 @@
     },
     "ped_tourist_w_0": {
       "frame": {
-        "x": 99,
-        "y": 119,
+        "x": 88,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3862,8 +4382,8 @@
     },
     "ped_tourist_w_1": {
       "frame": {
-        "x": 110,
-        "y": 119,
+        "x": 99,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3882,8 +4402,8 @@
     },
     "ped_tourist_w_2": {
       "frame": {
-        "x": 121,
-        "y": 119,
+        "x": 110,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3902,8 +4422,8 @@
     },
     "ped_tourist_w_3": {
       "frame": {
-        "x": 132,
-        "y": 119,
+        "x": 121,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3922,8 +4442,8 @@
     },
     "ped_tourist_nw_0": {
       "frame": {
-        "x": 143,
-        "y": 119,
+        "x": 132,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3942,8 +4462,8 @@
     },
     "ped_tourist_nw_1": {
       "frame": {
-        "x": 154,
-        "y": 119,
+        "x": 143,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3962,8 +4482,8 @@
     },
     "ped_tourist_nw_2": {
       "frame": {
-        "x": 165,
-        "y": 119,
+        "x": 154,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -3982,8 +4502,8 @@
     },
     "ped_tourist_nw_3": {
       "frame": {
-        "x": 176,
-        "y": 119,
+        "x": 165,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4002,8 +4522,8 @@
     },
     "ped_elderly_n_0": {
       "frame": {
-        "x": 187,
-        "y": 119,
+        "x": 176,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4022,8 +4542,8 @@
     },
     "ped_elderly_n_1": {
       "frame": {
-        "x": 198,
-        "y": 119,
+        "x": 187,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4042,8 +4562,8 @@
     },
     "ped_elderly_n_2": {
       "frame": {
-        "x": 209,
-        "y": 119,
+        "x": 198,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4062,8 +4582,8 @@
     },
     "ped_elderly_n_3": {
       "frame": {
-        "x": 220,
-        "y": 119,
+        "x": 209,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4082,8 +4602,8 @@
     },
     "ped_elderly_ne_0": {
       "frame": {
-        "x": 231,
-        "y": 119,
+        "x": 220,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4102,8 +4622,8 @@
     },
     "ped_elderly_ne_1": {
       "frame": {
-        "x": 242,
-        "y": 119,
+        "x": 231,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4122,8 +4642,8 @@
     },
     "ped_elderly_ne_2": {
       "frame": {
-        "x": 253,
-        "y": 119,
+        "x": 242,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4142,8 +4662,8 @@
     },
     "ped_elderly_ne_3": {
       "frame": {
-        "x": 264,
-        "y": 119,
+        "x": 253,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4162,8 +4682,8 @@
     },
     "ped_elderly_e_0": {
       "frame": {
-        "x": 275,
-        "y": 119,
+        "x": 264,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4182,8 +4702,8 @@
     },
     "ped_elderly_e_1": {
       "frame": {
-        "x": 286,
-        "y": 119,
+        "x": 275,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4202,8 +4722,8 @@
     },
     "ped_elderly_e_2": {
       "frame": {
-        "x": 297,
-        "y": 119,
+        "x": 286,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4222,8 +4742,8 @@
     },
     "ped_elderly_e_3": {
       "frame": {
-        "x": 308,
-        "y": 119,
+        "x": 297,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4242,8 +4762,8 @@
     },
     "ped_elderly_se_0": {
       "frame": {
-        "x": 319,
-        "y": 119,
+        "x": 308,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4262,8 +4782,8 @@
     },
     "ped_elderly_se_1": {
       "frame": {
-        "x": 330,
-        "y": 119,
+        "x": 319,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4282,8 +4802,8 @@
     },
     "ped_elderly_se_2": {
       "frame": {
-        "x": 341,
-        "y": 119,
+        "x": 330,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4302,8 +4822,8 @@
     },
     "ped_elderly_se_3": {
       "frame": {
-        "x": 352,
-        "y": 119,
+        "x": 341,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4322,8 +4842,8 @@
     },
     "ped_elderly_s_0": {
       "frame": {
-        "x": 363,
-        "y": 119,
+        "x": 352,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4342,8 +4862,8 @@
     },
     "ped_elderly_s_1": {
       "frame": {
-        "x": 374,
-        "y": 119,
+        "x": 363,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4362,8 +4882,8 @@
     },
     "ped_elderly_s_2": {
       "frame": {
-        "x": 385,
-        "y": 119,
+        "x": 374,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4382,8 +4902,8 @@
     },
     "ped_elderly_s_3": {
       "frame": {
-        "x": 396,
-        "y": 119,
+        "x": 385,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4402,8 +4922,8 @@
     },
     "ped_elderly_sw_0": {
       "frame": {
-        "x": 407,
-        "y": 119,
+        "x": 396,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4422,8 +4942,8 @@
     },
     "ped_elderly_sw_1": {
       "frame": {
-        "x": 418,
-        "y": 119,
+        "x": 407,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4442,8 +4962,8 @@
     },
     "ped_elderly_sw_2": {
       "frame": {
-        "x": 429,
-        "y": 119,
+        "x": 418,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4462,8 +4982,8 @@
     },
     "ped_elderly_sw_3": {
       "frame": {
-        "x": 440,
-        "y": 119,
+        "x": 429,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4482,8 +5002,8 @@
     },
     "ped_elderly_w_0": {
       "frame": {
-        "x": 451,
-        "y": 119,
+        "x": 440,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4502,8 +5022,8 @@
     },
     "ped_elderly_w_1": {
       "frame": {
-        "x": 462,
-        "y": 119,
+        "x": 451,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4522,8 +5042,8 @@
     },
     "ped_elderly_w_2": {
       "frame": {
-        "x": 473,
-        "y": 119,
+        "x": 462,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4542,8 +5062,8 @@
     },
     "ped_elderly_w_3": {
       "frame": {
-        "x": 484,
-        "y": 119,
+        "x": 473,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4562,8 +5082,8 @@
     },
     "ped_elderly_nw_0": {
       "frame": {
-        "x": 495,
-        "y": 119,
+        "x": 484,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4582,8 +5102,8 @@
     },
     "ped_elderly_nw_1": {
       "frame": {
-        "x": 506,
-        "y": 119,
+        "x": 495,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4602,8 +5122,8 @@
     },
     "ped_elderly_nw_2": {
       "frame": {
-        "x": 517,
-        "y": 119,
+        "x": 506,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4622,8 +5142,8 @@
     },
     "ped_elderly_nw_3": {
       "frame": {
-        "x": 528,
-        "y": 119,
+        "x": 517,
+        "y": 259,
         "w": 10,
         "h": 16
       },
@@ -4642,8 +5162,8 @@
     },
     "kei_truck_e": {
       "frame": {
-        "x": 539,
-        "y": 119,
+        "x": 528,
+        "y": 259,
         "w": 20,
         "h": 14
       },
@@ -4662,8 +5182,8 @@
     },
     "kei_truck_w": {
       "frame": {
-        "x": 560,
-        "y": 119,
+        "x": 549,
+        "y": 259,
         "w": 20,
         "h": 14
       },
@@ -4677,53 +5197,13 @@
       },
       "sourceSize": {
         "w": 20,
-        "h": 14
-      }
-    },
-    "bldg_subway": {
-      "frame": {
-        "x": 581,
-        "y": 119,
-        "w": 24,
-        "h": 14
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 14
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 14
-      }
-    },
-    "bldg_subway_night": {
-      "frame": {
-        "x": 606,
-        "y": 119,
-        "w": 24,
-        "h": 14
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 14
-      },
-      "sourceSize": {
-        "w": 24,
         "h": 14
       }
     },
     "bldg_sign_v": {
       "frame": {
-        "x": 631,
-        "y": 119,
+        "x": 570,
+        "y": 259,
         "w": 2,
         "h": 12
       },
@@ -4742,8 +5222,8 @@
     },
     "bldg_sign_v_night": {
       "frame": {
-        "x": 634,
-        "y": 119,
+        "x": 573,
+        "y": 259,
         "w": 2,
         "h": 12
       },
@@ -4762,8 +5242,8 @@
     },
     "cyclist_commuter_e_0": {
       "frame": {
-        "x": 637,
-        "y": 119,
+        "x": 576,
+        "y": 259,
         "w": 20,
         "h": 10
       },
@@ -4782,8 +5262,8 @@
     },
     "cyclist_commuter_e_1": {
       "frame": {
-        "x": 658,
-        "y": 119,
+        "x": 597,
+        "y": 259,
         "w": 20,
         "h": 10
       },
@@ -4802,8 +5282,8 @@
     },
     "cyclist_commuter_w_0": {
       "frame": {
-        "x": 679,
-        "y": 119,
+        "x": 618,
+        "y": 259,
         "w": 20,
         "h": 10
       },
@@ -4822,8 +5302,8 @@
     },
     "cyclist_commuter_w_1": {
       "frame": {
-        "x": 700,
-        "y": 119,
+        "x": 639,
+        "y": 259,
         "w": 20,
         "h": 10
       },
@@ -4842,8 +5322,8 @@
     },
     "cyclist_delivery_e_0": {
       "frame": {
-        "x": 721,
-        "y": 119,
+        "x": 660,
+        "y": 259,
         "w": 22,
         "h": 10
       },
@@ -4862,8 +5342,8 @@
     },
     "cyclist_delivery_e_1": {
       "frame": {
-        "x": 744,
-        "y": 119,
+        "x": 683,
+        "y": 259,
         "w": 22,
         "h": 10
       },
@@ -4882,8 +5362,8 @@
     },
     "cyclist_delivery_w_0": {
       "frame": {
-        "x": 767,
-        "y": 119,
+        "x": 706,
+        "y": 259,
         "w": 22,
         "h": 10
       },
@@ -4902,8 +5382,8 @@
     },
     "cyclist_delivery_w_1": {
       "frame": {
-        "x": 790,
-        "y": 119,
+        "x": 729,
+        "y": 259,
         "w": 22,
         "h": 10
       },
@@ -4922,8 +5402,8 @@
     },
     "signal_vehicle_red": {
       "frame": {
-        "x": 813,
-        "y": 119,
+        "x": 752,
+        "y": 259,
         "w": 8,
         "h": 8
       },
@@ -4942,8 +5422,8 @@
     },
     "signal_vehicle_yellow": {
       "frame": {
-        "x": 822,
-        "y": 119,
+        "x": 761,
+        "y": 259,
         "w": 8,
         "h": 8
       },
@@ -4962,8 +5442,8 @@
     },
     "signal_vehicle_green": {
       "frame": {
-        "x": 831,
-        "y": 119,
+        "x": 770,
+        "y": 259,
         "w": 8,
         "h": 8
       },
@@ -4982,8 +5462,8 @@
     },
     "signal_ped_walk": {
       "frame": {
-        "x": 840,
-        "y": 119,
+        "x": 779,
+        "y": 259,
         "w": 6,
         "h": 7
       },
@@ -5002,8 +5482,8 @@
     },
     "signal_ped_stop": {
       "frame": {
-        "x": 847,
-        "y": 119,
+        "x": 786,
+        "y": 259,
         "w": 6,
         "h": 7
       },
@@ -5022,8 +5502,8 @@
     },
     "signal_ped_flash": {
       "frame": {
-        "x": 854,
-        "y": 119,
+        "x": 793,
+        "y": 259,
         "w": 6,
         "h": 7
       },
@@ -5048,7 +5528,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 1024,
-      "h": 136
+      "h": 276
     },
     "scale": "1"
   }

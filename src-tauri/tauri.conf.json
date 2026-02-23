@@ -23,7 +23,7 @@
         "alwaysOnTop": true,
         "skipTaskbar": true,
         "shadow": false,
-        "resizable": false
+        "resizable": true
       }
     ],
     "trayIcon": {

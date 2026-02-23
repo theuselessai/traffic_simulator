@@ -3,7 +3,7 @@ import { GameState, TrafficPhase } from "../game/GameState";
 import type { Direction } from "../entities/Entity";
 import {
   NS_ROAD_LEFT, NS_ROAD_RIGHT, EW_ROAD_TOP, EW_ROAD_BOTTOM,
-  ZEBRA_WIDTH, TILE
+  ZEBRA_WIDTH, ZEBRA_WIDTH_N, TILE
 } from "../scene/Road";
 
 // Phase durations in seconds
@@ -81,10 +81,10 @@ export function placeTrafficLightSprites(
   const wbCenterY = EW_ROAD_BOTTOM - TILE;  // center of westbound lanes 2-3 (264)
 
   // Crossing edges (outer edge of zebra crossings)
-  const crossingTop = EW_ROAD_TOP - ZEBRA_WIDTH;      // 168
-  const crossingBottom = EW_ROAD_BOTTOM + ZEBRA_WIDTH; // 312
-  const crossingLeft = NS_ROAD_LEFT - ZEBRA_WIDTH;     // 168
-  const crossingRight = NS_ROAD_RIGHT + ZEBRA_WIDTH;   // 312
+  const crossingTop = EW_ROAD_TOP - ZEBRA_WIDTH_N;     // 148 (compact north)
+  const crossingBottom = EW_ROAD_BOTTOM + ZEBRA_WIDTH;  // 288
+  const crossingLeft = NS_ROAD_LEFT - ZEBRA_WIDTH;      // 320
+  const crossingRight = NS_ROAD_RIGHT + ZEBRA_WIDTH;    // 480
 
   // Intersection center
   const ixCenterX = (NS_ROAD_LEFT + NS_ROAD_RIGHT) / 2; // 240

@@ -1,172 +1,89 @@
 import { Container, Sprite, Spritesheet } from "pixi.js";
-import {
-  NS_ROAD_LEFT, NS_ROAD_RIGHT, EW_ROAD_TOP, EW_ROAD_BOTTOM,
-  SCENE_W, SCENE_H, ZEBRA_WIDTH, SIDEWALK_W
-} from "./Road";
+import { NS_ROAD_LEFT, NS_ROAD_RIGHT, BLDG_BOTTOM } from "./Road";
 
 // Building widths (must match generate-sprites.ts template configs)
 const BLDG_W: Record<string, number> = {
-  '109': 48, starbucks: 36, qfront: 48, station: 48,
-  lawson: 24, familymart: 24, seven_eleven: 24, ramen: 24,
-  office_a: 36, office_b: 36, pachinko: 36, subway: 24,
+  '109': 80, starbucks: 60, qfront: 80, station: 80,
+  lawson: 40, familymart: 40, seven_eleven: 40, ramen: 40,
+  office_a: 60, office_b: 60, pachinko: 60, subway: 40,
 };
 
-// Building heights: heightOverride ?? (8 + 12 * floors)
-const BLDG_H: Record<string, number> = {
-  '109': 56, starbucks: 32, qfront: 56, station: 20,
-  lawson: 20, familymart: 20, seven_eleven: 20, ramen: 20,
-  office_a: 44, office_b: 44, pachinko: 32, subway: 14,
+// North-facing heights: roofCap(12) + floors×24 + extraRoof
+const BLDG_H_NORTH: Record<string, number> = {
+  '109': 92, starbucks: 64, qfront: 118, station: 36,
+  lawson: 36, familymart: 36, seven_eleven: 36, ramen: 36,
+  office_a: 92, office_b: 92, pachinko: 64, subway: 24,
 };
 
-type LayoutEntry = { type: 'building'; id: string } | { type: 'sign' };
+type LayoutEntry = { id: string };
 
-// Quadrant layout arrays — buildings + optional vertical signs
-// Each quadrant fills 346px: sum of building widths + 2px per sign = 346
+// ── West section: right-to-left from NS_ROAD_LEFT (x=360) ──
+// Starbucks(60) + Pachinko(60) + Lawson(40) + Ramen(40) + Office_A(60) + Office_B(60) + FamilyMart(40) = 360
+const WEST_LAYOUT: LayoutEntry[] = [
+  { id: 'starbucks' },   // 60
+  { id: 'pachinko' },    // 60
+  { id: 'lawson' },      // 40
+  { id: 'ramen' },       // 40
+  { id: 'office_a' },    // 60
+  { id: 'office_b' },    // 60
+  { id: 'familymart' },  // 40
+]; // total = 360
 
-const NW_LAYOUT: LayoutEntry[] = [
-  { type: 'building', id: 'starbucks' },  // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'office_a' },    // 36
-  { type: 'building', id: 'lawson' },      // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'ramen' },       // 24
-  { type: 'building', id: 'office_b' },    // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'familymart' },  // 24
-  { type: 'building', id: 'seven_eleven' },// 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'pachinko' },    // 36
-  { type: 'building', id: 'subway' },      // 24
-  { type: 'building', id: 'office_a' },    // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'starbucks' },   // 36
-]; // 336 + 10 = 346
+// ── East section: left-to-right from NS_ROAD_RIGHT (x=440) ──
+// QFront(80) + 7-Eleven(40) + Office_B(60) + 109(80) + Office_A(60) + Subway(40) = 360
+const EAST_LAYOUT: LayoutEntry[] = [
+  { id: 'qfront' },       // 80
+  { id: 'seven_eleven' }, // 40
+  { id: 'office_b' },     // 60
+  { id: '109' },          // 80
+  { id: 'office_a' },     // 60
+  { id: 'subway' },       // 40
+]; // total = 360
 
-const NE_LAYOUT: LayoutEntry[] = [
-  { type: 'building', id: 'office_b' },    // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'seven_eleven' },// 24
-  { type: 'building', id: 'pachinko' },    // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'ramen' },       // 24
-  { type: 'building', id: 'office_a' },    // 36
-  { type: 'building', id: 'familymart' },  // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'lawson' },      // 24
-  { type: 'building', id: 'starbucks' },   // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'office_b' },    // 36
-  { type: 'building', id: 'subway' },      // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'starbucks' },   // 36
-]; // 336 + 10 = 346
+/** Place buildings from a layout array into a container */
+function placeSection(
+  container: Container,
+  sheet: Spritesheet,
+  layout: LayoutEntry[],
+  direction: 'right-to-left' | 'left-to-right',
+  startX: number,
+  baselineY: number,
+) {
+  let cursor = startX;
+  for (const entry of layout) {
+    const id = entry.id;
+    const w = BLDG_W[id];
+    const h = BLDG_H_NORTH[id];
+    const texName = `bldg_${id}_n`;
+    const tex = sheet.textures[texName];
+    if (!tex) continue;
+    const spr = new Sprite(tex);
+    if (direction === 'right-to-left') {
+      spr.x = cursor - w;
+      cursor -= w;
+    } else {
+      spr.x = cursor;
+      cursor += w;
+    }
+    spr.y = baselineY - h;
+    container.addChild(spr);
+  }
+}
 
-const SW_LAYOUT: LayoutEntry[] = [
-  { type: 'building', id: '109' },         // 48
-  { type: 'building', id: 'station' },     // 48
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'office_a' },    // 36
-  { type: 'building', id: 'ramen' },       // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'office_b' },    // 36
-  { type: 'building', id: 'lawson' },      // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'familymart' },  // 24
-  { type: 'building', id: 'seven_eleven' },// 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'starbucks' },   // 36
-  { type: 'building', id: 'pachinko' },    // 36
-  { type: 'sign' },                        // 2
-]; // 336 + 10 = 346
-
-const SE_LAYOUT: LayoutEntry[] = [
-  { type: 'building', id: 'qfront' },      // 48
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'office_b' },    // 36
-  { type: 'building', id: 'seven_eleven' },// 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'office_a' },    // 36
-  { type: 'building', id: 'ramen' },       // 24
-  { type: 'building', id: 'starbucks' },   // 36
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'lawson' },      // 24
-  { type: 'building', id: 'familymart' },  // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'pachinko' },    // 36
-  { type: 'building', id: 'subway' },      // 24
-  { type: 'sign' },                        // 2
-  { type: 'building', id: 'lawson' },      // 24
-]; // 336 + 10 = 346
-
-const SIGN_W = 2;
-
+/** Background buildings — north side only, bottom-aligned at BLDG_BOTTOM, BEHIND vehicles */
 export function buildBuildingsBg(sheet: Spritesheet): Container {
   const container = new Container();
 
-  const nBldgBottom = EW_ROAD_TOP - ZEBRA_WIDTH - SIDEWALK_W; // 66
-  const sBldgTop = EW_ROAD_BOTTOM + ZEBRA_WIDTH + SIDEWALK_W; // 254
-  const wBldgRight = NS_ROAD_LEFT - SIDEWALK_W;               // 346
-  const eBldgLeft = NS_ROAD_RIGHT + SIDEWALK_W;               // 454
+  // West section: right-to-left from NS road edge
+  placeSection(container, sheet, WEST_LAYOUT, 'right-to-left', NS_ROAD_LEFT, BLDG_BOTTOM);
 
-  // Helper: place buildings from a layout array
-  function placeQuadrant(
-    layout: LayoutEntry[],
-    direction: 'right-to-left' | 'left-to-right',
-    startX: number,
-    baselineY: number,
-    align: 'bottom' | 'top',
-  ) {
-    let cursor = startX;
-    for (const entry of layout) {
-      if (entry.type === 'sign') {
-        const signH = 12;
-        const sy = align === 'bottom' ? baselineY - signH : baselineY;
-        const s = new Sprite(sheet.textures["bldg_sign_v"]);
-        if (direction === 'right-to-left') {
-          s.x = cursor - SIGN_W;
-          cursor -= SIGN_W;
-        } else {
-          s.x = cursor;
-          cursor += SIGN_W;
-        }
-        s.y = sy;
-        container.addChild(s);
-      } else {
-        const id = entry.id;
-        const w = BLDG_W[id];
-        const h = BLDG_H[id];
-        const texName = `bldg_${id}`;
-        const tex = sheet.textures[texName];
-        if (!tex) continue;
-        const spr = new Sprite(tex);
-        if (direction === 'right-to-left') {
-          spr.x = cursor - w;
-          cursor -= w;
-        } else {
-          spr.x = cursor;
-          cursor += w;
-        }
-        spr.y = align === 'bottom' ? baselineY - h : baselineY;
-        container.addChild(spr);
-      }
-    }
-  }
-
-  // NW quadrant: right-to-left from wBldgRight, bottom-aligned at nBldgBottom
-  placeQuadrant(NW_LAYOUT, 'right-to-left', wBldgRight, nBldgBottom, 'bottom');
-
-  // NE quadrant: left-to-right from eBldgLeft, bottom-aligned at nBldgBottom
-  placeQuadrant(NE_LAYOUT, 'left-to-right', eBldgLeft, nBldgBottom, 'bottom');
-
-  // SW quadrant: right-to-left from wBldgRight, top-aligned at sBldgTop
-  placeQuadrant(SW_LAYOUT, 'right-to-left', wBldgRight, sBldgTop, 'top');
-
-  // SE quadrant: left-to-right from eBldgLeft, top-aligned at sBldgTop
-  placeQuadrant(SE_LAYOUT, 'left-to-right', eBldgLeft, sBldgTop, 'top');
+  // East section: left-to-right from NS road edge
+  placeSection(container, sheet, EAST_LAYOUT, 'left-to-right', NS_ROAD_RIGHT, BLDG_BOTTOM);
 
   return container;
 }
 
+/** Foreground buildings — none in cinematic view (no south-side buildings) */
 export function buildBuildingsFg(_sheet: Spritesheet): Container {
   return new Container();
 }

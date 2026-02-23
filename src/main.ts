@@ -21,7 +21,7 @@ async function init() {
   const debugEl = document.createElement("pre");
   debugEl.id = "debug";
   debugEl.style.cssText =
-    "position:fixed;top:0;left:0;z-index:9999;color:lime;background:rgba(0,0,0,0.7);font-size:10px;padding:4px;pointer-events:none;max-height:200px;overflow:hidden;";
+    "position:fixed;top:0;left:0;z-index:9999;color:lime;background:rgba(0,0,0,0.85);font-size:14px;padding:8px;pointer-events:none;max-height:400px;overflow:hidden;white-space:pre-wrap;min-width:400px;";
   document.body.appendChild(debugEl);
 
   debugLog("init starting...");
@@ -88,15 +88,47 @@ async function init() {
   createGameLoop(app.ticker, state, layers, sheet);
   debugLog("game loop started");
 
-  // Remove debug overlay after 10 seconds
+  // Remove debug overlay after 60 seconds
   setTimeout(() => {
     debugEl.remove();
-  }, 10000);
+  }, 60000);
 
-  // Window dragging (Tauri)
+  // Window dragging & full-width resize (Tauri)
   try {
     const { getCurrentWindow } = await import("@tauri-apps/api/window");
     const win = getCurrentWindow();
+
+    // Resize window to full screen width, keeping 2:1 aspect ratio
+    try {
+      const { PhysicalSize, PhysicalPosition } = await import("@tauri-apps/api/dpi");
+      const { primaryMonitor, currentMonitor } = await import("@tauri-apps/api/window");
+
+      // Try multiple approaches to get screen size
+      const monitor = await primaryMonitor() ?? await currentMonitor();
+      debugLog(`monitor: ${JSON.stringify(monitor ? { w: monitor.size.width, h: monitor.size.height, scale: monitor.scaleFactor } : null)}`);
+      debugLog(`window.screen: ${window.screen.width}x${window.screen.height}`);
+
+      let physW: number;
+      let physH: number;
+      if (monitor) {
+        physW = monitor.size.width;
+        physH = monitor.size.height;
+      } else {
+        // Fallback: use window.screen with device pixel ratio
+        const dpr = window.devicePixelRatio || 2;
+        physW = window.screen.width * dpr;
+        physH = window.screen.height * dpr;
+      }
+
+      const targetH = Math.round(physW * (SCENE_H / SCENE_W));
+      debugLog(`setting physical size: ${physW}x${targetH}`);
+
+      await win.setSize(new PhysicalSize(physW, targetH));
+      await win.setPosition(new PhysicalPosition(0, physH - targetH));
+      debugLog(`done: ${physW}x${targetH}, y=${physH - targetH}`);
+    } catch (e) {
+      debugLog(`resize error: ${e}`);
+    }
 
     container.addEventListener("mousedown", async (e) => {
       if (e.button === 0) {

@@ -4,7 +4,7 @@ import type { Entity, Direction, SpeedState } from "../entities/Entity";
 import {
   SCENE_W, SCENE_H,
   EW_ROAD_TOP, EW_ROAD_BOTTOM, NS_ROAD_LEFT, NS_ROAD_RIGHT,
-  ZEBRA_WIDTH, TILE,
+  ZEBRA_WIDTH, ZEBRA_WIDTH_N, TILE,
 } from "../scene/Road";
 import { canVehicleGo, shouldVehicleSlow, isPedestrianFlashing } from "./TrafficLight";
 
@@ -19,7 +19,7 @@ const DEPARTURE_GAP = 12; // gap that must open before the next car departs
 
 function getStopLinePos(dir: Direction): number {
   switch (dir) {
-    case "s": return EW_ROAD_TOP - ZEBRA_WIDTH - TILE;
+    case "s": return EW_ROAD_TOP - ZEBRA_WIDTH_N - TILE;  // compact north crossing
     case "n": return EW_ROAD_BOTTOM + ZEBRA_WIDTH + TILE;
     case "e": return NS_ROAD_LEFT - ZEBRA_WIDTH - TILE;
     case "w": return NS_ROAD_RIGHT + ZEBRA_WIDTH + TILE;
