@@ -1,0 +1,19 @@
+[package]
+name = "shibuya-traffic"
+version = "0.1.0"
+description = "Shibuya Crossing Desktop Traffic Companion"
+authors = ["you"]
+edition = "2021"
+
+[lib]
+name = "shibuya_traffic_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+tauri-plugin-autostart = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

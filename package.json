@@ -1,0 +1,32 @@
+{
+  "name": "shibuya-traffic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "tauri": "tauri",
+    "generate-sprites": "tsx scripts/generate-sprites.ts"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["canvas", "esbuild"]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.30.1",
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.10.0",
+    "@types/node": "^25.3.0",
+    "canvas": "^3.2.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/plugin-autostart": "^2.5.1",
+    "pixi.js": "^8.16.0"
+  }
+}
