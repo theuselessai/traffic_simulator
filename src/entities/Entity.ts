@@ -6,6 +6,12 @@ export type PedDirection = "n" | "ne" | "e" | "se" | "s" | "sw" | "w" | "nw";
 
 export type SpeedState = "cruising" | "decelerating" | "stopped" | "accelerating";
 
+export interface Waypoint {
+  x: number;
+  y: number;
+  waitForSignal?: boolean;
+}
+
 export interface Entity {
   id: number;
   type: EntityType;
@@ -30,7 +36,7 @@ export interface Entity {
   // For pedestrians: target position
   targetX?: number;
   targetY?: number;
-  // Path for pedestrians
-  path?: { x: number; y: number }[];
+  // Path for pedestrians (waypoint-based)
+  path?: Waypoint[];
   pathIndex?: number;
 }

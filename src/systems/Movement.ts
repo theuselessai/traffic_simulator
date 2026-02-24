@@ -1,12 +1,14 @@
+import type { Spritesheet } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { GameState } from "../game/GameState";
 import type { SceneLayers } from "../scene/SceneBuilder";
-import type { Entity, Direction, SpeedState } from "../entities/Entity";
+import type { Entity, Direction, PedDirection, SpeedState } from "../entities/Entity";
 import {
   SCENE_W, SCENE_H,
   EW_ROAD_TOP, EW_ROAD_BOTTOM, NS_ROAD_LEFT, NS_ROAD_RIGHT,
   ZEBRA_WIDTH, ZEBRA_WIDTH_N, TILE,
 } from "../scene/Road";
-import { canVehicleGo, shouldVehicleSlow, isPedestrianFlashing } from "./TrafficLight";
+import { canVehicleGo, shouldVehicleSlow, canPedestriansGo, isPedestrianFlashing } from "./TrafficLight";
 
 // Physics constants (per-second, converted to per-frame in update via dt)
 const DECELERATION = 120; // px/s² (≈0.12 px/frame² at 30fps → 0.12*30²=108, rounded up)
@@ -286,20 +288,84 @@ function updateVehicle(entity: Entity, state: GameState, dt: number) {
   }
 }
 
-// ---- Pedestrian (unchanged physics — they don't queue) ----
+// ---- Direction helper ----
 
-function updatePedestrian(entity: Entity, state: GameState, dt: number) {
-  if (entity.targetX === undefined || entity.targetY === undefined) {
+/** Map a dx/dy vector to one of 8 PedDirection values using atan2. */
+export function computeDirection(dx: number, dy: number): PedDirection {
+  const angle = Math.atan2(dy, dx); // radians, 0 = east, π/2 = south
+  // Divide into 8 sectors of π/4
+  const sector = Math.round(angle / (Math.PI / 4));
+  switch (((sector % 8) + 8) % 8) {
+    case 0: return "e";
+    case 1: return "se";
+    case 2: return "s";
+    case 3: return "sw";
+    case 4: return "w";
+    case 5: return "nw";
+    case 6: return "n";
+    case 7: return "ne";
+    default: return "s";
+  }
+}
+
+// ---- Pedestrian (waypoint-based path following) ----
+
+function updatePedestrian(entity: Entity, state: GameState, dt: number, sheet: Spritesheet) {
+  const path = entity.path;
+  if (!path || entity.pathIndex === undefined) {
     entity.state = "despawning";
     return;
   }
 
-  const dx = entity.targetX - entity.x;
-  const dy = entity.targetY - entity.y;
+  // Reached end of path
+  if (entity.pathIndex >= path.length) {
+    entity.state = "despawning";
+    return;
+  }
+
+  const target = path[entity.pathIndex];
+  const wasWaiting = entity.state === "waiting";
+
+  entity.state = "moving";
+
+  const dx = target.x - entity.x;
+  const dy = target.y - entity.y;
   const dist = Math.sqrt(dx * dx + dy * dy);
 
+  // Arrived at waypoint
   if (dist < 3) {
-    entity.state = "despawning";
+    // If this is a wait waypoint, hold here until signal allows crossing.
+    // Don't start crossing during SCRAMBLE_FLASH if already waiting.
+    if (target.waitForSignal) {
+      if (!canPedestriansGo(state) || (isPedestrianFlashing(state) && wasWaiting)) {
+        entity.state = "waiting";
+        entity.sprite.x = entity.x;
+        entity.sprite.y = entity.y;
+        entity.sprite.zIndex = entity.y;
+        return;
+      }
+    }
+
+    entity.pathIndex++;
+    // Check if path is complete
+    if (entity.pathIndex >= path.length) {
+      entity.state = "despawning";
+      return;
+    }
+    // Recompute direction for next segment
+    const next = path[entity.pathIndex];
+    const ndx = next.x - entity.x;
+    const ndy = next.y - entity.y;
+    const newDir = computeDirection(ndx, ndy);
+    if (newDir !== entity.direction) {
+      entity.direction = newDir;
+      // Update sprite texture for new direction
+      const frameName = `ped_${entity.variant}_${newDir}_${entity.animFrame}`;
+      const tex = sheet.textures[frameName];
+      if (tex) {
+        (entity.sprite as Sprite).texture = tex;
+      }
+    }
     return;
   }
 
@@ -313,16 +379,38 @@ function updatePedestrian(entity: Entity, state: GameState, dt: number) {
   entity.x += nx * speed * dt;
   entity.y += ny * speed * dt;
 
+  // Animation
   entity.animTimer += dt;
   if (entity.animTimer > 0.15) {
     entity.animTimer = 0;
+    const prevFrame = entity.animFrame;
     entity.animFrame = (entity.animFrame + 1) % 4;
+    // Update texture on frame change
+    if (entity.animFrame !== prevFrame) {
+      const frameName = `ped_${entity.variant}_${entity.direction}_${entity.animFrame}`;
+      const tex = sheet.textures[frameName];
+      if (tex) {
+        (entity.sprite as Sprite).texture = tex;
+      }
+    }
+  }
+
+  // Update direction based on movement
+  const newDir = computeDirection(dx, dy);
+  if (newDir !== entity.direction) {
+    entity.direction = newDir;
+    const frameName = `ped_${entity.variant}_${newDir}_${entity.animFrame}`;
+    const tex = sheet.textures[frameName];
+    if (tex) {
+      (entity.sprite as Sprite).texture = tex;
+    }
   }
 
   entity.sprite.x = entity.x;
   entity.sprite.y = entity.y;
   entity.sprite.zIndex = entity.y;
 
+  // Off-screen safety net
   if (isOffScreen(entity)) {
     entity.state = "despawning";
   }
@@ -345,7 +433,8 @@ function updateCyclist(entity: Entity, state: GameState, dt: number) {
 export function updateMovement(
   state: GameState,
   dt: number,
-  layers: SceneLayers
+  layers: SceneLayers,
+  sheet: Spritesheet
 ) {
   const toRemove: number[] = [];
 
@@ -355,7 +444,7 @@ export function updateMovement(
         updateVehicle(entity, state, dt);
         break;
       case "pedestrian":
-        updatePedestrian(entity, state, dt);
+        updatePedestrian(entity, state, dt, sheet);
         break;
       case "cyclist":
         updateCyclist(entity, state, dt);

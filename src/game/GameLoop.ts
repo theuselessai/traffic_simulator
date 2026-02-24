@@ -31,7 +31,7 @@ export function createGameLoop(
     updateSpawner(state, dt, layers, sheet);
 
     // Move entities
-    updateMovement(state, dt, layers);
+    updateMovement(state, dt, layers, sheet);
 
     // Update lighting
     updateLighting(state, layers);
